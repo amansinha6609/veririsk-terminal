@@ -4,6 +4,7 @@ import {
   Search, Activity, Loader2, ShieldAlert, BarChart3, 
   History, Globe, Zap, Database, Terminal as TerminalIcon 
 } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 interface DashboardProps { onSelectReport: (report: any) => void; }
 
@@ -14,8 +15,10 @@ export const DashboardPage: React.FC<DashboardProps> = ({ onSelectReport }) => {
   const [fullSummary, setFullSummary] = useState("");
   const [history, setHistory] = useState<string[]>(["Tesla", "Alphabet Inc.", "SpiceJet"]);
 
-  const handleSearch = async () => {
-    if (!query) return;
+  const handleSearch = async (searchQuery?: string) => {
+    const q = searchQuery || query;
+    if (!q) return;
+    if (searchQuery) setQuery(searchQuery);
     setLoading(true);
     setFullSummary("");
     let accumulatedText = "";
@@ -29,7 +32,7 @@ export const DashboardPage: React.FC<DashboardProps> = ({ onSelectReport }) => {
       const response = await fetch("http://localhost:8008/api/v1/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
-        body: JSON.stringify({ company_name: query }),
+        body: JSON.stringify({ company_name: q }),
       });
 
       const reader = response.body?.getReader();
@@ -58,9 +61,9 @@ export const DashboardPage: React.FC<DashboardProps> = ({ onSelectReport }) => {
         }
       }
       
-      if (!history.includes(query)) setHistory([query, ...history].slice(0, 5));
+      if (!history.includes(q)) setHistory([q, ...history].slice(0, 5));
       onSelectReport({
-        company_name: query,
+        company_name: q,
         overall_risk: capturedScore,
         summary: accumulatedText,
         metrics: capturedMetrics,
@@ -88,7 +91,7 @@ export const DashboardPage: React.FC<DashboardProps> = ({ onSelectReport }) => {
         <nav className="flex flex-col gap-1">
           <div className="text-[10px] uppercase tracking-[0.2em] text-slate-500 mb-4 px-2">Recent Audits</div>
           {history.map((item, i) => (
-            <button key={i} onClick={() => setQuery(item)} className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-white/5 transition-colors text-sm text-slate-400 hover:text-white">
+            <button key={i} onClick={() => handleSearch(item)} className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-white/5 transition-colors text-sm text-slate-400 hover:text-white">
               <History size={14} /> {item}
             </button>
           ))}
@@ -102,36 +105,58 @@ export const DashboardPage: React.FC<DashboardProps> = ({ onSelectReport }) => {
       </aside>
 
       {/* --- MAIN CONTENT --- */}
-      <main className="flex-1 flex flex-col overflow-y-auto">
+      <main className="flex-1 flex flex-col overflow-y-auto relative">
         
-        {/* TOP SEARCH BAR */}
-        <header className="h-20 border-b border-white/5 flex items-center px-10 bg-[#020202]/50 backdrop-blur-xl sticky top-0 z-10">
-          <div className="flex-1 max-w-2xl relative">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-600" size={18} />
-            <input 
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-              placeholder="Search entity database..." 
-              className="w-full bg-white/5 border border-white/10 rounded-full py-2.5 pl-12 pr-4 text-sm focus:outline-none focus:border-blue-500/50 transition-all"
-            />
-          </div>
-          <div className="flex gap-4 ml-auto">
-             <div className="flex flex-col items-end justify-center">
-                <span className="text-[10px] text-slate-500 uppercase tracking-widest font-mono">Market Status</span>
-                <span className="text-xs text-white font-bold uppercase">Open // NASDAQ</span>
-             </div>
-          </div>
-        </header>
+        {/* MARKET TICKER TOP BAR */}
+        <div className="h-8 border-b border-white/5 bg-[#050505] overflow-hidden flex items-center">
+          <motion.div
+            animate={{ x: [0, -1000] }}
+            transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
+            className="whitespace-nowrap flex items-center gap-12 text-[10px] uppercase font-mono tracking-widest text-slate-500"
+          >
+            <span>NASDAQ: <span className="text-emerald-500">OPEN</span></span>
+            <span>Risk Index: <span className="text-blue-500">14.2</span></span>
+            <span>Global Volatility: <span className="text-red-500">ELEVATED</span></span>
+            <span>VIX: 18.4</span>
+            <span>SPY: 512.30</span>
+            <span>TSLA: 175.22</span>
+            <span>AAPL: 169.30</span>
+            <span>NVDA: 880.08</span>
+            <span>NASDAQ: <span className="text-emerald-500">OPEN</span></span>
+            <span>Risk Index: <span className="text-blue-500">14.2</span></span>
+            <span>Global Volatility: <span className="text-red-500">ELEVATED</span></span>
+            <span>VIX: 18.4</span>
+            <span>SPY: 512.30</span>
+          </motion.div>
+        </div>
 
         {/* WORKSPACE */}
-        <section className="p-10 max-w-5xl mx-auto w-full">
+        <section className="p-10 max-w-5xl mx-auto w-full flex-1 flex flex-col">
           {!loading ? (
-            <div className="grid grid-cols-12 gap-6">
-                <div className="col-span-12 mb-8">
-                    <h1 className="text-4xl font-light text-white mb-2">Welcome, <span className="font-bold text-blue-500">Forensic Lead</span></h1>
-                    <p className="text-slate-500 text-sm">Initiate an entity sweep to begin risk triangulation.</p>
+            <div className="flex flex-col items-center justify-center h-full">
+                <div className="text-center mb-12">
+                    <h1 className="text-4xl font-light text-white mb-4">Bloomberg <span className="font-bold text-blue-500">Terminal</span></h1>
+                    <p className="text-slate-500 text-sm">Enter entity name or ticker to begin neural triangulation.</p>
                 </div>
+
+                <div className="w-full max-w-3xl relative mb-16">
+                  <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-600" size={24} />
+                  <input
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+                    placeholder="Search entity database..."
+                    className="w-full bg-[#050505] border border-white/10 rounded-full py-5 pl-16 pr-6 text-lg focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50 transition-all shadow-2xl"
+                  />
+                  <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
+                    <kbd className="hidden md:inline-flex items-center gap-1 px-2 py-1 rounded bg-white/5 border border-white/10 text-[10px] font-mono text-slate-500">
+                      ENTER ↵
+                    </kbd>
+                  </div>
+                </div>
+
+                {/* KPI CARDS */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
 
                 {/* KPI CARDS */}
                 {[
@@ -139,15 +164,16 @@ export const DashboardPage: React.FC<DashboardProps> = ({ onSelectReport }) => {
                   { label: "Global Presence", icon: <Globe size={20}/>, color: "text-purple-500" },
                   { label: "Neural Audit", icon: <Zap size={20}/>, color: "text-amber-500" }
                 ].map((kpi, i) => (
-                  <div key={i} className="col-span-4 bg-[#080808] border border-white/5 p-6 rounded-2xl hover:border-white/10 transition-all group">
+                  <div key={i} className="bg-[#080808] border border-white/5 p-6 rounded-2xl hover:border-white/10 transition-all group w-full">
                     <div className={`${kpi.color} mb-4 bg-white/5 w-10 h-10 flex items-center justify-center rounded-xl`}>{kpi.icon}</div>
                     <div className="text-xs text-slate-500 mb-1">{kpi.label}</div>
                     <div className="text-lg font-bold text-white tracking-tight italic uppercase">Active_Scan</div>
                   </div>
                 ))}
+                </div>
             </div>
           ) : (
-            <div className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <div className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500 mt-8">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                         <TerminalIcon size={20} className="text-blue-500" />
