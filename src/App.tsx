@@ -1,5 +1,6 @@
 import { SignedIn, SignedOut } from "@clerk/clerk-react";
 import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
 // Ensure these paths match your folder structure exactly!
 import { LandingPage } from "./components/LandingPage";
@@ -30,29 +31,36 @@ export default function App() {
   return (
     <main className="min-h-screen bg-[#020202] text-slate-300">
       
-      {/* 1. GATEWAY: If user is not logged in, show the high-stakes Landing Page */}
-      <SignedOut>
-        <LandingPage />
-      </SignedOut>
-
-      {/* 2. TERMINAL: If user is logged in, show either the Dashboard or a Specific Report */}
-      <SignedIn>
-        <div className="animate-in fade-in duration-500">
+        <AnimatePresence mode="wait">
           {selectedReport ? (
             /* VIEWING A SPECIFIC AUDIT */
-            <ReportView 
-              report={selectedReport} 
-              onBack={() => setSelectedReport(null)} 
-            />
+            <motion.div
+              key="reportView"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+            >
+              <ReportView
+                report={selectedReport}
+                onBack={() => setSelectedReport(null)}
+              />
+            </motion.div>
           ) : (
             /* THE MAIN SEARCH COMMAND CENTER */
-            <DashboardPage 
-              onSelectReport={(report: ForensicReport) => setSelectedReport(report)} 
-            />
+            <motion.div
+              key="dashboardPage"
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 1.02 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+            >
+              <DashboardPage
+                onSelectReport={(report: ForensicReport) => setSelectedReport(report)}
+              />
+            </motion.div>
           )}
-        </div>
-      </SignedIn>
-
+        </AnimatePresence>
     </main>
   );
 }
