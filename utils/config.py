@@ -1,49 +1,52 @@
 """
-Configuration management via environment variables.
-Copy .env.example to .env and fill in your keys.
+Institutional Configuration Management
+Automated via Pydantic-Settings for Veririsk Forensic Terminal.
 """
 
-from pydantic_settings import BaseSettings
-from typing import List
+from pydantic_settings import BaseSettings, SettingsConfigDict
+from typing import List, Optional
 from functools import lru_cache
 
 
 class Settings(BaseSettings):
-    # --- Anthropic ---
-    ANTHROPIC_API_KEY: str
+    # --- Required Terminal Keys (Matches your .env) ---
+    GEMINI_API_KEY: str
+    VITE_CLERK_PUBLISHABLE_KEY: str
+    APP_URL: str = "http://localhost:5173"
 
-    # --- NewsAPI ---
+    # --- Optional AI Nodes (Set to None to prevent crashes) ---
+    ANTHROPIC_API_KEY: Optional[str] = None
     NEWS_API_KEY: str = ""
-
-    # --- SerpAPI (Google Search) ---
     SERP_API_KEY: str = ""
 
-    # --- SEC EDGAR ---
-    # No key needed; uses public API. Set a user-agent email for compliance.
-    SEC_EDGAR_USER_AGENT: str = "DueDiligenceAI contact@yourcompany.com"
+    # --- SEC EDGAR Compliance ---
+    SEC_EDGAR_USER_AGENT: str = "VeririskForensic contact@yourcompany.com"
 
-    # --- Server ---
+    # --- Infrastructure ---
     ALLOWED_ORIGINS: List[str] = ["http://localhost:3000", "http://localhost:5173"]
-    API_SECRET_KEY: str = "change-me-in-production"
-
-    # --- Rate limiting ---
+    API_SECRET_KEY: str = "institutional-handshake-v3"
+    
+    # --- Performance Tuning ---
     MAX_CONCURRENT_ANALYSES: int = 5
-
-    # --- Timeouts (seconds) ---
-    CLAUDE_TIMEOUT: int = 120
     EXTERNAL_API_TIMEOUT: int = 15
 
-    # --- Report storage (set to "" to disable persistence) ---
+    # --- Persistence ---
     REPORTS_DIR: str = "./reports"
 
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
+    # --- Audit Protocol (The "Safety Valve") ---
+    # This tells Pydantic to read your .env and NOT crash on extra fields.
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        extra="ignore"  # Crucial: This ignores keys it doesn't recognize
+    )
 
 
 @lru_cache()
 def get_settings() -> Settings:
+    """Returns a cached instance of the settings to save system resources."""
     return Settings()
 
 
+# Initialize the settings object for use across the application
 settings = get_settings()
