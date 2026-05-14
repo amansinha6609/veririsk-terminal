@@ -3,6 +3,7 @@ SerpAPI (Google Search) Enrichment Service
 Runs targeted Google searches to feed structured results into the analysis pipeline.
 """
 
+import asyncio
 import httpx
 import logging
 from typing import Optional
@@ -110,12 +111,16 @@ class SerpAPIService:
         Returns deduplicated result list.
         """
         queries = MODULE_SEARCH_QUERIES.get(module, [])[:max_queries]
+        formatted_queries = [q.replace("{company}", company) for q in queries]
+
+        # Parallelize search requests
+        tasks = [self.search(fq, num_results=3) for fq in formatted_queries]
+        search_results = await asyncio.gather(*tasks)
+
         all_results: list[dict] = []
         seen_links: set[str] = set()
 
-        for q in queries:
-            formatted_q = q.replace("{company}", company)
-            results = await self.search(formatted_q, num_results=3)
+        for formatted_q, results in zip(formatted_queries, search_results):
             for r in results:
                 if r["link"] not in seen_links:
                     seen_links.add(r["link"])
