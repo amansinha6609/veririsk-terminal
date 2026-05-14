@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Python ignores
 __pycache__/
 *.pyc
@@ -10,3 +11,13 @@ dist/
 
 # THE MOST IMPORTANT LINE
 .env
+=======
+node_modules/
+build/
+dist/
+coverage/
+.DS_Store
+*.log
+.env*
+!.env.example
+>>>>>>> c81fea5675ae9b6f164d841f9d0ef8499da9f8fd
