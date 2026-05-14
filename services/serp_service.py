@@ -117,14 +117,22 @@ class SerpAPIService:
         tasks = [self.search(fq, num_results=3) for fq in formatted_queries]
         search_results = await asyncio.gather(*tasks)
 
+        return self._process_search_results(formatted_queries, search_results)
+
+    def _process_search_results(
+        self, queries: list[str], results_sets: list[list[dict]]
+    ) -> list[dict]:
+        """
+        Deduplicate search results across multiple queries and tag with source query.
+        """
         all_results: list[dict] = []
         seen_links: set[str] = set()
 
-        for formatted_q, results in zip(formatted_queries, search_results):
+        for query, results in zip(queries, results_sets):
             for r in results:
                 if r["link"] not in seen_links:
                     seen_links.add(r["link"])
-                    r["query"] = formatted_q
+                    r["query"] = query
                     all_results.append(r)
 
         return all_results
