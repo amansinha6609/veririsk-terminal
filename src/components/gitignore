@@ -1,0 +1,20 @@
+# Secrets & Credentials
+.env
+.env.local
+.env.*.local
+
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# Build outputs
+dist/
+build/
+.vite/
+
+# System files
+.DS_Store
+Thumbs.db

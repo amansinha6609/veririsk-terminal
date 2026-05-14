@@ -1,0 +1,54 @@
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-headline: "Geist", sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, monospace;
+
+  /* Enterprise SaaS Palette */
+  --color-surface-lowest: #010f1f;
+  --color-surface-low: #0d1c2d;
+  --color-surface: #051424;
+  --color-surface-high: #1c2b3c;
+  --color-surface-highest: #273647;
+  --color-surface-bright: #2c3a4c;
+
+  --color-on-surface: #d4e4fa;
+  --color-on-surface-variant: #c4c5d6;
+  
+  --color-outline: #8e909f;
+  --color-outline-variant: #434654;
+
+  --color-primary: #b6c4ff;
+  --color-on-primary: #00287d;
+  --color-primary-container: #4169e1;
+  --color-on-primary-container: #f8f7ff;
+
+  --color-secondary-container: #46464a;
+  
+  --color-error: #ffb4ab;
+  --color-error-container: #93000a;
+  --color-on-error-container: #ffdad6;
+
+  --radius-xl: 0.75rem;
+}
+
+@layer base {
+  body {
+    @apply bg-surface text-on-surface font-sans antialiased;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-headline tracking-tight;
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
