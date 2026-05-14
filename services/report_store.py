@@ -64,10 +64,24 @@ class ReportStore:
         """List saved reports (metadata only, no full content)."""
         if not self.reports_dir:
             return []
+
+        # Use os.scandir for much faster file listing and mtime retrieval
+        files = []
+        try:
+            with os.scandir(self.reports_dir) as entries:
+                for entry in entries:
+                    if entry.name.endswith('.json') and entry.is_file():
+                        files.append((entry.stat().st_mtime, entry.path))
+        except OSError:
+            pass
+
+        files.sort(reverse=True)
+        top_files = [f[1] for f in files[:limit]]
+
         results = []
-        for f in sorted(self.reports_dir.glob("*.json"), key=os.path.getmtime, reverse=True)[:limit]:
+        for file_path in top_files:
             try:
-                with open(f, encoding="utf-8") as fh:
+                with open(file_path, encoding="utf-8") as fh:
                     data = json.load(fh)
                 if company_filter and company_filter.lower() not in data.get("company_name", "").lower():
                     continue
