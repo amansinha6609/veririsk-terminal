@@ -21,6 +21,8 @@ export const DashboardPage: React.FC<DashboardProps> = ({ onSelectReport }) => {
     let accumulatedText = "";
     let capturedScore = 44;
     let buffer = "";
+    let capturedMetrics = undefined;
+    let capturedChartData = undefined;
 
     try {
       const token = await getToken();
@@ -50,12 +52,20 @@ export const DashboardPage: React.FC<DashboardProps> = ({ onSelectReport }) => {
               setFullSummary(prev => prev + data.text);
             }
             if (data.overall_risk) capturedScore = data.overall_risk;
+            if (data.metrics) capturedMetrics = data.metrics;
+            if (data.chartData) capturedChartData = data.chartData;
           } catch (e) {}
         }
       }
       
       if (!history.includes(query)) setHistory([query, ...history].slice(0, 5));
-      onSelectReport({ company_name: query, overall_risk: capturedScore, summary: accumulatedText });
+      onSelectReport({
+        company_name: query,
+        overall_risk: capturedScore,
+        summary: accumulatedText,
+        metrics: capturedMetrics,
+        chartData: capturedChartData
+      });
     } catch (err) {
       console.error(err);
     } finally {

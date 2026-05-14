@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShieldCheck, Lock, key, Eye, RefreshCw, Activity } from 'lucide-react';
+import { ShieldCheck, Lock, Key, Eye, RefreshCw, Activity } from 'lucide-react';
 import { motion } from 'motion/react';
 
 export function SecurityPage() {

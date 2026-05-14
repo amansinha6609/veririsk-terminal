@@ -11,6 +11,16 @@ interface ForensicReport {
   company_name: string;
   overall_risk: number;
   summary: string;
+  metrics?: {
+    debt_to_equity: number;
+    current_ratio: number;
+    altman_z_score: number;
+    interest_coverage: number;
+  };
+  chartData?: {
+    solvency: Array<{ quarter: string; debt: number; cash: number }>;
+    velocity: Array<{ time: string; risk: number }>;
+  };
 }
 
 export default function App() {
