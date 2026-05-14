@@ -11,7 +11,7 @@ import uuid
 from datetime import datetime, timezone
 from typing import AsyncGenerator
 
-from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi import APIRouter
 from fastapi.responses import StreamingResponse
 
 from models.schemas import (
