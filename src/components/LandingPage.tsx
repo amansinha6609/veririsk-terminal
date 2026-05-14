@@ -41,18 +41,18 @@ export const LandingPage = () => {
           </div>
           
           <h1 className="text-7xl md:text-8xl font-black text-white tracking-tighter mb-8 leading-[0.9] italic">
-            EXPOSE THE <br />
-            <span className="bg-gradient-to-r from-blue-500 via-emerald-400 to-blue-500 bg-clip-text text-transparent bg-[size:200%_auto] animate-gradient-x">INVISIBLE RISK.</span>
+            Institutional Grade <br />
+            <span className="bg-gradient-to-r from-blue-500 via-emerald-400 to-emerald-500 bg-clip-text text-transparent bg-[size:200%_auto] animate-gradient-x">Forensic Intelligence</span>
           </h1>
           
           <p className="max-w-2xl mx-auto text-slate-500 text-lg md:text-xl font-light mb-12 leading-relaxed">
-            Forensic analysis meets neural processing. Triangulate insolvency, audit qualifications, and liquidity gaps in 2.4 seconds. 
+            Neural Liquidity Triangulation. Forensic analysis meets neural processing. Triangulate insolvency, audit qualifications, and liquidity gaps in 2.4 seconds.
           </p>
 
           <div className="flex flex-col md:flex-row items-center justify-center gap-4">
             <SignInButton mode="modal">
-                <button className="group flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-10 py-5 rounded-2xl font-bold transition-all shadow-[0_0_40px_-10px_rgba(37,99,235,0.5)] active:scale-95">
-                START AUDIT SWEEP <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                <button className="group flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white px-10 py-5 rounded-2xl font-bold transition-all shadow-[0_0_40px_-10px_rgba(16,185,129,0.5)] active:scale-95">
+                Request Access <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
                 </button>
             </SignInButton>
             <button className="px-10 py-5 rounded-2xl font-bold border border-white/10 hover:bg-white/5 transition-all text-sm">
@@ -67,18 +67,18 @@ export const LandingPage = () => {
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-px bg-white/10 border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
           {[
             { 
-              title: "Solvency Mesh", 
-              desc: "Deep-layer debt analysis across all reported balance sheet nodes.",
+              title: "Solvency Shield",
+              desc: "Deep-layer debt analysis across all reported balance sheet nodes via Z-Score Modeling.",
               icon: <Database className="text-blue-500" size={24} />
             },
             { 
-              title: "Qualified Audit detection", 
-              desc: "Real-time extraction of material uncertainties from auditor opinions.",
+              title: "Neural Audit",
+              desc: "Gemini 3.1 Analysis. Real-time extraction of material uncertainties from auditor opinions.",
               icon: <Lock className="text-emerald-500" size={24} />
             },
             { 
-              title: "Global Entity Index", 
-              desc: "Instant access to 45M+ corporate profiles with historical risk scoring.",
+              title: "Obsidian Interface",
+              desc: "High-Density UI. Instant access to corporate profiles with historical risk scoring.",
               icon: <Globe className="text-purple-500" size={24} />
             }
           ].map((feature, i) => (

@@ -1,5 +1,6 @@
-import { SignedIn, SignedOut, UserButton } from "@clerk/clerk-react";
-import { useState, useEffect } from "react";
+import { SignedIn, SignedOut } from "@clerk/clerk-react";
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
 // Component Imports
 import { LandingPage } from "./components/LandingPage";
@@ -39,67 +40,36 @@ export default function App() {
   return (
     <main className="min-h-screen bg-[#020202] text-slate-300 font-mono selection:bg-emerald-500/30">
       
-      {/* 1. PUBLIC GATEWAY */}
-      <SignedOut>
-        <LandingPage />
-      </SignedOut>
-
-      {/* 2. INSTITUTIONAL TERMINAL */}
-      <SignedIn>
-        {/* Persistent Forensic Header */}
-        <header className="border-b border-white/10 bg-black/50 backdrop-blur-md sticky top-0 z-50">
-          <div className="max-w-7xl mx-auto px-6 py-3 flex justify-between items-center">
-            <div className="flex items-center gap-4">
-              <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-              <h1 className="text-xs font-bold tracking-[0.2em] text-white uppercase">
-                Veririsk // Forensic Terminal v3.1
-              </h1>
-            </div>
-            
-            <div className="flex items-center gap-6">
-              <span className="text-[10px] text-slate-500 uppercase tracking-widest hidden md:inline">
-                Status: Operational // Node-04
-              </span>
-              <UserButton afterSignOutUrl="/" />
-            </div>
-          </div>
-        </header>
-
-        <div className="max-w-7xl mx-auto p-6">
-          {isAnalyzing ? (
-            /* ANALYZER TRANSITION SCREEN */
-            <div className="h-[60vh] flex flex-col items-center justify-center space-y-4">
-              <div className="w-12 h-12 border-2 border-emerald-500/20 border-t-emerald-500 rounded-full animate-spin" />
-              <p className="text-[10px] uppercase tracking-[0.3em] text-emerald-500">
-                Triangulating Solvency Data...
-              </p>
-            </div>
-          ) : selectedReport ? (
-            /* ACTIVE AUDIT VIEW */
-            <div className="animate-in slide-in-from-bottom-4 duration-700">
-              <ReportView 
-                report={selectedReport} 
-                onBack={() => setSelectedReport(null)} 
+        <AnimatePresence mode="wait">
+          {selectedReport ? (
+            /* VIEWING A SPECIFIC AUDIT */
+            <motion.div
+              key="reportView"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+            >
+              <ReportView
+                report={selectedReport}
+                onBack={() => setSelectedReport(null)}
               />
-            </div>
+            </motion.div>
           ) : (
-            /* COMMAND CENTER (DASHBOARD) */
-            <div className="animate-in fade-in zoom-in-95 duration-500">
-              <DashboardPage 
-                onSelectReport={(report: ForensicReport) => setSelectedReport(report)} 
+            /* THE MAIN SEARCH COMMAND CENTER */
+            <motion.div
+              key="dashboardPage"
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 1.02 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+            >
+              <DashboardPage
+                onSelectReport={(report: ForensicReport) => setSelectedReport(report)}
               />
-            </div>
+            </motion.div>
           )}
-        </div>
-
-        {/* Forensic Footer */}
-        <footer className="fixed bottom-4 left-6 pointer-events-none">
-          <p className="text-[9px] text-slate-600 uppercase tracking-tighter">
-            System encrypted // End-to-end Audit Log active
-          </p>
-        </footer>
-      </SignedIn>
-
+        </AnimatePresence>
     </main>
   );
 }
