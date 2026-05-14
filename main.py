@@ -8,6 +8,7 @@ from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 import google.generativeai as genai
 from dotenv import load_dotenv
+from utils.config import settings
 
 # --- 1. CONFIGURATION & ENVIRONMENT ---
 load_dotenv()
@@ -18,7 +19,7 @@ app = FastAPI(title="Veririsk Forensic Terminal v3.1")
 # Standard CORS setup to allow your React frontend to communicate with Python
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=settings.ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
