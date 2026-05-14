@@ -1,0 +1,12 @@
+# Python ignores
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# React/Node ignores
+node_modules/
+dist/
+
+# THE MOST IMPORTANT LINE
+.env
