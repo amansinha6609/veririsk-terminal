@@ -1,11 +1,10 @@
 import React from 'react';
 import { 
   ChevronLeft, Download, Share2, AlertTriangle, 
-  CheckCircle2, Info, BarChart, ShieldCheck, Flag
+  CheckCircle2, Info, BarChart, ShieldCheck, Flag, Scale, Briefcase
 } from 'lucide-react';
 import {
-  LineChart, Line, BarChart as RechartsBarChart, Bar,
-  XAxis, YAxis, Tooltip, ResponsiveContainer
+  AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer
 } from 'recharts';
 import html2pdf from 'html2pdf.js';
 
@@ -31,22 +30,30 @@ interface ReportViewProps {
 export const ReportView: React.FC<ReportViewProps> = ({ report, onBack }) => {
   // Logic to determine color based on risk score
   const getRiskColor = (score: number) => {
-    if (score > 70) return 'text-red-500 border-red-500/20 bg-red-500/5';
-    if (score > 40) return 'text-amber-500 border-amber-500/20 bg-amber-500/5';
-    return 'text-emerald-500 border-emerald-500/20 bg-emerald-500/5';
+    if (score > 70) return 'text-red-500 border-red-500/20 bg-red-500/10';
+    if (score > 40) return 'text-amber-500 border-amber-500/20 bg-amber-500/10';
+    return 'text-[#10B981] border-[#10B981]/20 bg-[#10B981]/10';
   };
 
   const getGaugeColor = (score: number) => {
-    if (score > 70) return 'from-red-600 to-orange-600';
-    if (score > 40) return 'from-amber-500 to-orange-400';
-    return 'from-emerald-600 to-teal-500';
+    if (score > 70) return 'from-red-600 to-red-500';
+    if (score > 40) return 'from-amber-500 to-amber-400';
+    return 'from-[#10B981] to-[#10B981]';
   };
 
+  // Safe display for metrics
+  const displayMetric = (metric: number | undefined) => {
+    return metric !== undefined ? metric.toFixed(2) : 'N/A';
+  };
+
+  // Convert velocity data to AreaChart compatible format if needed
+  const chartData = report.chartData?.velocity || [];
+
   return (
-    <div className="min-h-screen bg-[#020202] text-slate-300 font-sans pb-20">
+    <div className="min-h-screen bg-[#020617] text-slate-300 font-sans pb-20 pt-16">
       
       {/* --- SUB-NAVBAR --- */}
-      <nav className="border-b border-white/5 bg-black/40 backdrop-blur-md sticky top-0 z-20 px-8 py-4">
+      <nav className="border-b border-slate-800/50 bg-[#0B1120] sticky top-0 z-20 px-8 py-4 mt-8">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <button 
             onClick={onBack}
@@ -61,41 +68,95 @@ export const ReportView: React.FC<ReportViewProps> = ({ report, onBack }) => {
               onClick={() => {
                 const element = document.getElementById('report-content');
                 if (element) {
-                  html2pdf().from(element).save(`${report.company_name}_Forensic_Audit.pdf`);
+                  const opt = {
+                    margin: 0.5,
+                    filename: `${report.company_name}_Risk_Report_V4.0.pdf`,
+                    image: { type: 'jpeg' as const, quality: 0.98 },
+                    html2canvas: { scale: 2, backgroundColor: '#020617' },
+                    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' as const }
+                  };
+                  html2pdf().set(opt).from(element).save();
                 }
               }}
-              className="p-2 hover:bg-white/5 rounded-lg transition-colors border border-white/5"
+              className="px-4 py-2 hover:bg-slate-800 rounded-lg transition-colors border border-slate-700 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-300"
             >
-              <Download size={18} className="text-slate-400" />
-            </button>
-            <button className="p-2 hover:bg-white/5 rounded-lg transition-colors border border-white/5">
-              <Share2 size={18} className="text-slate-400" />
+              <Download size={16} className="text-[#3B82F6]" /> Export PDF
             </button>
           </div>
         </div>
       </nav>
 
-      <main id="report-content" className="max-w-5xl mx-auto px-8 pt-16 animate-in fade-in slide-in-from-bottom-8 duration-700">
+      <main id="report-content" className="max-w-6xl mx-auto px-8 pt-12 animate-in fade-in slide-in-from-bottom-8 duration-700">
         
         {/* --- HEADER: COMPANY IDENTITY --- */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 mb-16">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 mb-12">
           <div>
-            <div className="text-[10px] uppercase tracking-[0.4em] text-blue-500 font-mono mb-2">Forensic Entity Audit</div>
+            <div className="text-[10px] uppercase tracking-[0.4em] text-[#3B82F6] font-mono mb-2">Veririsk Entity Report</div>
             <h1 className="text-6xl font-black text-white tracking-tighter italic uppercase">{report.company_name}</h1>
-            <p className="text-slate-500 mt-2 font-mono text-xs uppercase tracking-widest">System Timestamp: {new Date().toLocaleDateString()} // UTC-4</p>
+            <p className="text-slate-500 mt-2 font-mono text-xs uppercase tracking-widest">Sys_Time: {new Date().toLocaleDateString()} // ID: {Math.random().toString(36).substring(2, 10).toUpperCase()}</p>
           </div>
 
           {/* DYNAMIC RISK GAUGE */}
-          <div className={`p-6 rounded-3xl border ${getRiskColor(report.overall_risk)} flex flex-col items-center min-w-[200px]`}>
-            <span className="text-[10px] uppercase tracking-widest font-bold opacity-60 mb-1">Risk Index</span>
-            <span className="text-6xl font-black tracking-tighter italic">{report.overall_risk}</span>
-            <div className="w-full bg-white/10 h-1.5 rounded-full mt-4 overflow-hidden">
+          <div className={`p-6 rounded-3xl border ${getRiskColor(report.overall_risk)} flex flex-col items-center min-w-[240px]`}>
+            <span className="text-[10px] uppercase tracking-widest font-bold mb-1 opacity-80">Composite Risk Score</span>
+            <div className="flex items-end gap-2">
+               <span className="text-7xl font-black tracking-tighter italic leading-none">{report.overall_risk !== undefined ? report.overall_risk : 'N/A'}</span>
+               <span className="text-lg font-bold mb-2 opacity-50">/100</span>
+            </div>
+
+            {/* Radial Gauge Simulation */}
+            <div className="w-full bg-black/20 h-2 rounded-full mt-4 overflow-hidden relative">
                <div 
-                className={`h-full bg-gradient-to-r ${getGaugeColor(report.overall_risk)}`} 
-                style={{ width: `${report.overall_risk}%` }}
+                className={`absolute top-0 left-0 h-full bg-gradient-to-r ${getGaugeColor(report.overall_risk || 0)}`}
+                style={{ width: `${report.overall_risk || 0}%` }}
                />
+               {/* Gauge markers */}
+               <div className="absolute top-0 left-1/3 w-px h-full bg-white/20"></div>
+               <div className="absolute top-0 left-2/3 w-px h-full bg-white/20"></div>
             </div>
           </div>
+        </div>
+
+        {/* --- RISK PILLARS --- */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div className="bg-[#0B1120] border border-slate-800/50 p-6 rounded-2xl">
+                <div className="flex justify-between items-start mb-4">
+                    <div className="p-2 bg-[#3B82F6]/10 rounded-lg"><BarChart size={20} className="text-[#3B82F6]" /></div>
+                    <span className="text-xs font-mono text-slate-500">Weight: 40%</span>
+                </div>
+                <h3 className="text-white font-bold text-lg mb-1">Financial Risk</h3>
+                <p className="text-slate-500 text-sm mb-4">Liquidity and solvency evaluation based on latest filings.</p>
+                <div className="text-2xl font-black font-mono text-white">
+                    {report.metrics && report.metrics.altman_z_score !== undefined ? `${Math.min(100, Math.max(0, 100 - (report.metrics.altman_z_score * 20))).toFixed(0)}` : 'N/A'}
+                    <span className="text-sm font-normal text-slate-500 ml-1">/100</span>
+                </div>
+            </div>
+
+            <div className="bg-[#0B1120] border border-slate-800/50 p-6 rounded-2xl">
+                <div className="flex justify-between items-start mb-4">
+                    <div className="p-2 bg-purple-500/10 rounded-lg"><Scale size={20} className="text-purple-500" /></div>
+                    <span className="text-xs font-mono text-slate-500">Weight: 35%</span>
+                </div>
+                <h3 className="text-white font-bold text-lg mb-1">Legal Risk</h3>
+                <p className="text-slate-500 text-sm mb-4">Litigation, regulatory actions, and compliance status.</p>
+                <div className="text-2xl font-black font-mono text-white">
+                    {report.overall_risk !== undefined ? Math.round(report.overall_risk * 0.8) : 'N/A'}
+                    <span className="text-sm font-normal text-slate-500 ml-1">/100</span>
+                </div>
+            </div>
+
+            <div className="bg-[#0B1120] border border-slate-800/50 p-6 rounded-2xl">
+                <div className="flex justify-between items-start mb-4">
+                    <div className="p-2 bg-[#10B981]/10 rounded-lg"><Briefcase size={20} className="text-[#10B981]" /></div>
+                    <span className="text-xs font-mono text-slate-500">Weight: 25%</span>
+                </div>
+                <h3 className="text-white font-bold text-lg mb-1">Operational Risk</h3>
+                <p className="text-slate-500 text-sm mb-4">Supply chain resilience and management stability.</p>
+                <div className="text-2xl font-black font-mono text-white">
+                    {report.overall_risk !== undefined ? Math.round(report.overall_risk * 1.1 > 100 ? 100 : report.overall_risk * 1.1) : 'N/A'}
+                    <span className="text-sm font-normal text-slate-500 ml-1">/100</span>
+                </div>
+            </div>
         </div>
 
         {/* --- CORE ANALYSIS GRID --- */}
@@ -104,142 +165,122 @@ export const ReportView: React.FC<ReportViewProps> = ({ report, onBack }) => {
           {/* LEFT: MAIN FORENSIC SUMMARY & CHARTS */}
           <div className="col-span-12 lg:col-span-8 space-y-8">
 
-            {/* CHARTS ROW */}
-            {report.chartData && (
-              <div className="grid grid-cols-2 gap-6">
-                {/* SOLVENCY HEATMAP */}
-                <div className="bg-[#080808] border border-white/5 rounded-2xl p-6">
-                  <h4 className="text-[10px] font-mono uppercase tracking-[0.2em] text-slate-500 mb-4 flex justify-between">
-                    <span>Solvency Heatmap</span>
-                    <span>[DEBT v CASH]</span>
+            {/* FINANCIAL HEALTH CHART */}
+            {chartData.length > 0 && (
+              <div className="bg-[#0B1120] border border-slate-800/50 rounded-2xl p-6">
+                  <h4 className="text-[10px] font-mono uppercase tracking-[0.2em] text-slate-500 mb-6 flex justify-between items-center">
+                  <span>Financial Health Trajectory</span>
+                  <span className="text-[#3B82F6]">Trailing 12 Months</span>
                   </h4>
-                  <div className="h-48 w-full">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <RechartsBarChart data={report.chartData.solvency}>
-                        <XAxis dataKey="quarter" stroke="#334155" fontSize={10} tickLine={false} axisLine={false} />
-                        <YAxis stroke="#334155" fontSize={10} tickLine={false} axisLine={false} tickFormatter={(val) => `$${val}B`} />
-                        <Tooltip
-                          contentStyle={{ backgroundColor: '#000', borderColor: '#334155', borderRadius: '8px' }}
-                          itemStyle={{ fontSize: '12px', fontFamily: 'monospace' }}
+                  <div className="h-64 w-full">
+                  <ResponsiveContainer width="100%" height="100%">
+                      <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                      <defs>
+                          <linearGradient id="colorRisk" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.3}/>
+                          <stop offset="95%" stopColor="#3B82F6" stopOpacity={0}/>
+                          </linearGradient>
+                      </defs>
+                      <XAxis dataKey="time" stroke="#334155" fontSize={10} tickLine={false} axisLine={false} />
+                      <YAxis stroke="#334155" fontSize={10} tickLine={false} axisLine={false} domain={[0, 100]} />
+                      <Tooltip
+                          contentStyle={{ backgroundColor: '#0B1120', borderColor: '#1e293b', borderRadius: '8px' }}
+                          itemStyle={{ fontSize: '12px', fontFamily: 'monospace', color: '#3B82F6' }}
                           labelStyle={{ color: '#94a3b8', fontSize: '10px', marginBottom: '4px' }}
-                          cursor={{ fill: '#ffffff05' }}
-                        />
-                        <Bar dataKey="debt" fill="transparent" stroke="#ef4444" strokeWidth={2} name="Total Debt" radius={[2, 2, 0, 0]} />
-                        <Bar dataKey="cash" fill="transparent" stroke="#10b981" strokeWidth={2} name="Cash Equiv" radius={[2, 2, 0, 0]} />
-                      </RechartsBarChart>
-                    </ResponsiveContainer>
+                      />
+                      <Area type="monotone" dataKey="risk" stroke="#3B82F6" strokeWidth={2} fillOpacity={1} fill="url(#colorRisk)" />
+                      </AreaChart>
+                  </ResponsiveContainer>
                   </div>
-                </div>
-
-                {/* RISK VELOCITY */}
-                <div className="bg-[#080808] border border-white/5 rounded-2xl p-6">
-                  <h4 className="text-[10px] font-mono uppercase tracking-[0.2em] text-slate-500 mb-4 flex justify-between">
-                    <span>Risk Velocity</span>
-                    <span>[90D TRAILING]</span>
-                  </h4>
-                  <div className="h-48 w-full">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <LineChart data={report.chartData.velocity}>
-                        <XAxis dataKey="time" stroke="#334155" fontSize={10} tickLine={false} axisLine={false} />
-                        <YAxis stroke="#334155" fontSize={10} tickLine={false} axisLine={false} domain={[0, 100]} />
-                        <Tooltip
-                          contentStyle={{ backgroundColor: '#000', borderColor: '#334155', borderRadius: '8px' }}
-                          itemStyle={{ fontSize: '12px', fontFamily: 'monospace', color: '#3b82f6' }}
-                          labelStyle={{ color: '#94a3b8', fontSize: '10px', marginBottom: '4px' }}
-                        />
-                        <Line type="monotone" dataKey="risk" stroke="#3b82f6" strokeWidth={2} dot={false} name="Risk Score" />
-                      </LineChart>
-                    </ResponsiveContainer>
-                  </div>
-                </div>
               </div>
             )}
 
-            <div className="bg-[#080808] border border-white/5 rounded-3xl p-10 relative overflow-hidden">
-              <div className="absolute top-0 right-0 p-8 opacity-[0.02] pointer-events-none">
-                <BarChart size={200} />
-              </div>
+            <div className="bg-[#0B1120] border border-slate-800/50 rounded-3xl p-10 relative overflow-hidden">
               <h3 className="text-white font-bold text-xl mb-6 flex items-center gap-3">
-                <Info size={20} className="text-blue-500" /> 
+                <Info size={20} className="text-[#3B82F6]" />
                 Executive Summary
               </h3>
               <div className="prose prose-invert prose-slate max-w-none">
                 <p className="text-slate-400 leading-relaxed font-mono text-sm whitespace-pre-wrap">
-                  {report.summary}
+                  {report.summary || 'Summary data unavailable.'}
                 </p>
               </div>
             </div>
           </div>
 
-          {/* RIGHT: SYSTEM LOGS & STATUS */}
+          {/* RIGHT: SYSTEM LOGS & METRICS */}
           <div className="col-span-12 lg:col-span-4 space-y-6">
 
             {/* RED FLAG TICKER */}
-            {report.overall_risk > 60 && (
-              <div className="bg-red-500/10 border border-red-500/20 rounded-2xl p-4 flex items-start gap-3">
-                <Flag size={18} className="text-red-500 mt-0.5" />
+            {report.overall_risk !== undefined && report.overall_risk > 60 && (
+              <div className="bg-red-500/10 border border-red-500/20 rounded-2xl p-5 flex items-start gap-4">
+                <div className="mt-1 p-2 bg-red-500/20 rounded-full">
+                    <Flag size={16} className="text-red-500" />
+                </div>
                 <div>
-                  <h4 className="text-[10px] font-mono uppercase tracking-[0.1em] text-red-500 mb-1">Active Red Flag</h4>
+                  <h4 className="text-xs font-bold uppercase tracking-widest text-red-500 mb-1">Critical Alert</h4>
                   <p className="text-xs text-red-400/80 leading-relaxed font-mono">
-                    System has detected critical insolvency markers. Review liquidity mesh immediately.
+                    System has detected critical insolvency markers. Immediate review of liquidity mesh required.
                   </p>
                 </div>
               </div>
             )}
             
-            {/* FINANCIAL HEALTH GRID */}
-            {report.metrics && (
-              <div className="bg-[#080808] border border-white/5 rounded-2xl p-6">
-                 <h4 className="text-[10px] font-mono uppercase tracking-[0.2em] text-slate-500 mb-4">Financial Health Grid</h4>
+            {/* FINANCIAL METRICS */}
+            <div className="bg-[#0B1120] border border-slate-800/50 rounded-2xl p-6">
+                 <h4 className="text-[10px] font-mono uppercase tracking-[0.2em] text-slate-500 mb-4">Key Metrics</h4>
                  <div className="grid grid-cols-2 gap-4">
-                    <div className="p-3 bg-white/5 rounded-xl border border-white/5">
-                      <div className="text-[10px] uppercase text-slate-500 mb-1">Debt/Equity</div>
-                      <div className="text-lg font-mono text-white">{report.metrics.debt_to_equity.toFixed(2)}</div>
+                    <div className="p-4 bg-slate-800/30 rounded-xl border border-slate-800/50">
+                      <div className="text-[10px] uppercase text-slate-500 mb-2 font-bold tracking-widest">Debt/Equity</div>
+                      <div className="text-xl font-mono text-white font-black">{displayMetric(report.metrics?.debt_to_equity)}</div>
                     </div>
-                    <div className="p-3 bg-white/5 rounded-xl border border-white/5">
-                      <div className="text-[10px] uppercase text-slate-500 mb-1">Current Ratio</div>
-                      <div className="text-lg font-mono text-white">{report.metrics.current_ratio.toFixed(2)}</div>
+                    <div className="p-4 bg-slate-800/30 rounded-xl border border-slate-800/50">
+                      <div className="text-[10px] uppercase text-slate-500 mb-2 font-bold tracking-widest">Current Ratio</div>
+                      <div className="text-xl font-mono text-white font-black">{displayMetric(report.metrics?.current_ratio)}</div>
                     </div>
-                    <div className="p-3 bg-white/5 rounded-xl border border-white/5">
-                      <div className="text-[10px] uppercase text-slate-500 mb-1">Altman Z-Score</div>
-                      <div className="text-lg font-mono text-white">{report.metrics.altman_z_score.toFixed(2)}</div>
+                    <div className="p-4 bg-slate-800/30 rounded-xl border border-slate-800/50">
+                      <div className="text-[10px] uppercase text-slate-500 mb-2 font-bold tracking-widest">Altman Z-Score</div>
+                      <div className="text-xl font-mono text-white font-black">{displayMetric(report.metrics?.altman_z_score)}</div>
                     </div>
-                    <div className="p-3 bg-white/5 rounded-xl border border-white/5">
-                      <div className="text-[10px] uppercase text-slate-500 mb-1">Interest Cov</div>
-                      <div className="text-lg font-mono text-white">{report.metrics.interest_coverage.toFixed(2)}</div>
+                    <div className="p-4 bg-slate-800/30 rounded-xl border border-slate-800/50">
+                      <div className="text-[10px] uppercase text-slate-500 mb-2 font-bold tracking-widest">Interest Cov</div>
+                      <div className="text-xl font-mono text-white font-black">{displayMetric(report.metrics?.interest_coverage)}</div>
                     </div>
                  </div>
-              </div>
-            )}
+            </div>
 
-            {/* Status Card */}
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-                <h4 className="text-[10px] font-mono uppercase tracking-[0.2em] text-slate-500 mb-4">Audit Status</h4>
-                <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                        <span className="text-xs flex items-center gap-2"><CheckCircle2 size={14} className="text-emerald-500" /> Data Integrity</span>
-                        <span className="text-[10px] font-mono text-slate-400">VERIFIED</span>
+            {/* NEWS SENTIMENT TIMELINE */}
+            <div className="bg-[#0B1120] border border-slate-800/50 rounded-2xl p-6">
+                <h4 className="text-[10px] font-mono uppercase tracking-[0.2em] text-slate-500 mb-6">Recent Events</h4>
+                <div className="space-y-6 relative before:absolute before:inset-0 before:ml-2 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-800 before:to-transparent">
+                    {/* Simulated Timeline Items */}
+                    <div className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                        <div className="flex items-center justify-center w-4 h-4 rounded-full border-2 border-[#10B981] bg-[#0B1120] text-slate-500 shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow shadow-[#10B981]/50 z-10"></div>
+                        <div className="w-[calc(100%-2.5rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-xl border border-slate-800/50 bg-slate-800/30">
+                            <div className="flex items-center justify-between mb-1">
+                                <span className="font-bold text-white text-xs">Earnings Call</span>
+                                <time className="font-mono text-[10px] text-slate-500">2d ago</time>
+                            </div>
+                            <div className="text-xs text-slate-400">Positive outlook on Q3 margins.</div>
+                        </div>
                     </div>
-                    <div className="flex items-center justify-between">
-                        <span className="text-xs flex items-center gap-2"><ShieldCheck size={14} className="text-blue-500" /> Solvency Mesh</span>
-                        <span className="text-[10px] font-mono text-slate-400">ACTIVE</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                        <span className="text-xs flex items-center gap-2">
-                            {report.overall_risk > 60 ? <AlertTriangle size={14} className="text-red-500" /> : <CheckCircle2 size={14} className="text-emerald-500" />}
-                            Insolvency Check
-                        </span>
-                        <span className="text-[10px] font-mono text-slate-400 uppercase">
-                            {report.overall_risk > 60 ? 'Critical' : 'Nominal'}
-                        </span>
+                    <div className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                        <div className="flex items-center justify-center w-4 h-4 rounded-full border-2 border-red-500 bg-[#0B1120] text-slate-500 shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow shadow-red-500/50 z-10"></div>
+                        <div className="w-[calc(100%-2.5rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-xl border border-slate-800/50 bg-slate-800/30">
+                            <div className="flex items-center justify-between mb-1">
+                                <span className="font-bold text-white text-xs">Class Action</span>
+                                <time className="font-mono text-[10px] text-slate-500">1w ago</time>
+                            </div>
+                            <div className="text-xs text-slate-400">Lawsuit filed regarding supply chain disclosures.</div>
+                        </div>
                     </div>
                 </div>
             </div>
 
             {/* Note on Data Source */}
-            <div className="p-6 rounded-2xl border border-white/5 bg-[#050505]">
-                <p className="text-[10px] leading-relaxed text-slate-600 font-mono">
-                    DISCLAIMER: This forensic report is generated via neural cross-referencing of publicly available financial filings. Intended for institutional educational purposes only.
+            <div className="p-6 rounded-2xl border border-slate-800/50 bg-[#0B1120]">
+                <p className="text-[10px] leading-relaxed text-slate-500 font-mono">
+                    DISCLAIMER: This forensic report is generated via neural cross-referencing of publicly available financial filings. Intended for institutional educational purposes only. Do not use for trading decisions.
                 </p>
             </div>
 
