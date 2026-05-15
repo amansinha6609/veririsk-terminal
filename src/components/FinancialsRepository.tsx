@@ -43,7 +43,7 @@ export const FinancialsRepository: React.FC<FinancialsRepositoryProps> = ({ onSe
         <p className="text-slate-500 font-bold mt-2">Access comprehensive financial disclosures and operational audits.</p>
       </div>
 
-      <div className="flex gap-4 mb-8 border-b border-white/5 pb-4">
+      <div className="flex gap-4 mb-8 border-b border-[#1e293b] pb-4">
         {(['All Reports', 'Annual', 'Quarterly', 'Audit Statements'] as TabType[]).map((tab) => (
           <button
             key={tab}
@@ -67,7 +67,7 @@ export const FinancialsRepository: React.FC<FinancialsRepositoryProps> = ({ onSe
             whileTap={{ scale: 0.98 }}
             onClick={() => !report.locked && onSelectReport(report)}
             disabled={report.locked}
-            className={`text-left bg-[#0B1120] border border-white/5 p-6 rounded-2xl relative overflow-hidden transition-all group ${
+            className={`text-left bg-[#020617] border border-[#1e293b] p-6 rounded-2xl relative overflow-hidden transition-all group ${
               report.locked ? 'opacity-80 cursor-not-allowed' : 'hover:border-[#3B82F6]/50 hover:bg-[#3B82F6]/5'
             }`}
           >

@@ -4,13 +4,13 @@ export function Sidebar({ activePage, onNavigate }: any) {
   const menuItems = [
     { id: 'dashboard', icon: LayoutDashboard, label: 'Dashboard' },
     { id: 'compare', icon: Scale, label: 'Benchmarking' },
-    { id: 'reports', icon: FileText, label: 'Audit History' },
+    { id: 'account_activity', icon: FileText, label: 'Audit History' },
     { id: 'financials', icon: FileText, label: 'Financials' },
     { id: 'security', icon: ShieldAlert, label: 'Security' },
   ];
 
   return (
-    <aside className="w-64 bg-[#0a192f] border-r border-white/5 flex flex-col py-8 px-4">
+    <aside className="w-64 bg-[#020617] border-r border-[#1e293b] flex flex-col py-8 px-4">
       <div className="px-4 mb-12">
         <h1 className="text-2xl font-black tracking-tighter text-blue-500">VERIRISK</h1>
       </div>
@@ -32,8 +32,8 @@ export function Sidebar({ activePage, onNavigate }: any) {
         ))}
       </nav>
 
-      <div className="pt-8 border-t border-white/5 space-y-2">
-        <button className="w-full flex items-center gap-4 px-4 py-3 rounded-xl text-gray-500 hover:text-white transition-all font-bold text-sm">
+      <div className="pt-8 border-t border-[#1e293b] space-y-2">
+        <button onClick={() => onNavigate('settings')} className="w-full flex items-center gap-4 px-4 py-3 rounded-xl text-gray-500 hover:text-white transition-all font-bold text-sm">
           <Settings size={20} /> Settings
         </button>
         <button className="w-full flex items-center gap-4 px-4 py-3 rounded-xl text-red-400 hover:bg-red-500/10 transition-all font-bold text-sm">

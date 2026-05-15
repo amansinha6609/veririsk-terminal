@@ -25,7 +25,7 @@ export const ReportPage: React.FC<ReportPageProps> = ({ reportData, onBack }) =>
   };
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white p-8 animate-in fade-in duration-500">
+    <div className="min-h-screen bg-[#020617] text-white p-8 animate-in fade-in duration-500">
       <div className="max-w-5xl mx-auto">
         {/* Navigation */}
         <button onClick={onBack} className="text-gray-400 hover:text-white mb-8 flex items-center gap-2 transition-colors">
@@ -33,14 +33,14 @@ export const ReportPage: React.FC<ReportPageProps> = ({ reportData, onBack }) =>
         </button>
 
         {/* Header Card */}
-        <div className="bg-[#0a0a0a] border border-white/10 rounded-2xl p-8 mb-8 shadow-2xl">
+        <div className="bg-[#0a0a0a] border border-[#1e293b] rounded-2xl p-8 mb-8 shadow-2xl">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
             <div>
               <h2 className="text-sm font-mono text-blue-400 uppercase tracking-[0.2em] mb-2">Forensic Audit Result</h2>
               <h1 className="text-5xl font-bold tracking-tight">{reportData.company_name}</h1>
             </div>
             
-            <div className="flex items-center gap-6 bg-white/5 p-6 rounded-2xl border border-white/5">
+            <div className="flex items-center gap-6 bg-white/5 p-6 rounded-2xl border border-[#1e293b]">
               <div className="text-center">
                 <div className={`text-5xl font-black ${getRiskColor(riskScore)}`}>
                   {riskScore}
@@ -56,7 +56,7 @@ export const ReportPage: React.FC<ReportPageProps> = ({ reportData, onBack }) =>
         {/* Analysis Content */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">
-            <div className="bg-[#0a0a0a] border border-white/10 rounded-2xl p-8">
+            <div className="bg-[#0a0a0a] border border-[#1e293b] rounded-2xl p-8">
               <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
                 <AlertCircle className="text-blue-400" size={20} />
                 Executive Summary
@@ -69,7 +69,7 @@ export const ReportPage: React.FC<ReportPageProps> = ({ reportData, onBack }) =>
 
           {/* Sidebar Status */}
           <div className="space-y-6">
-            <div className="bg-[#0a0a0a] border border-white/10 rounded-2xl p-6">
+            <div className="bg-[#0a0a0a] border border-[#1e293b] rounded-2xl p-6">
               <h4 className="text-xs font-bold text-gray-500 uppercase mb-4 tracking-widest">Audit Status</h4>
               <div className="space-y-4">
                 <div className="flex items-center justify-between">

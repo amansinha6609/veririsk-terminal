@@ -53,7 +53,7 @@ export const ReportView: React.FC<ReportViewProps> = ({ report, onBack }) => {
     <div className="min-h-screen bg-[#020617] text-slate-300 font-sans pb-20 pt-16">
       
       {/* --- SUB-NAVBAR --- */}
-      <nav className="border-b border-slate-800/50 bg-[#0B1120] sticky top-0 z-20 px-8 py-4 mt-8">
+      <nav className="border-b border-[#1e293b] bg-[#020617] sticky top-0 z-20 px-8 py-4 mt-8">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <button 
             onClick={onBack}
@@ -78,7 +78,7 @@ export const ReportView: React.FC<ReportViewProps> = ({ report, onBack }) => {
                   html2pdf().set(opt).from(element).save();
                 }
               }}
-              className="px-4 py-2 hover:bg-slate-800 rounded-lg transition-colors border border-slate-700 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-300"
+              className="px-4 py-2 hover:bg-slate-800 rounded-lg transition-colors border border-[#1e293b] flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-300"
             >
               <Download size={16} className="text-[#3B82F6]" /> Export PDF
             </button>
@@ -92,7 +92,7 @@ export const ReportView: React.FC<ReportViewProps> = ({ report, onBack }) => {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 mb-12">
           <div>
             <div className="text-[10px] uppercase tracking-[0.4em] text-[#3B82F6] font-mono mb-2">Veririsk Entity Report</div>
-            <h1 className="text-6xl font-black text-white tracking-tighter italic uppercase">{report.company_name}</h1>
+            <h1 className="text-6xl font-black text-white tracking-tighter uppercase">{report.company_name}</h1>
             <p className="text-slate-500 mt-2 font-mono text-xs uppercase tracking-widest">Sys_Time: {new Date().toLocaleDateString()} // ID: {Math.random().toString(36).substring(2, 10).toUpperCase()}</p>
           </div>
 
@@ -100,7 +100,7 @@ export const ReportView: React.FC<ReportViewProps> = ({ report, onBack }) => {
           <div className={`p-6 rounded-3xl border ${getRiskColor(report.overall_risk)} flex flex-col items-center min-w-[240px]`}>
             <span className="text-[10px] uppercase tracking-widest font-bold mb-1 opacity-80">Composite Risk Score</span>
             <div className="flex items-end gap-2">
-               <span className="text-7xl font-black tracking-tighter italic leading-none">{report.overall_risk !== undefined ? report.overall_risk : 'N/A'}</span>
+               <span className="text-7xl font-black tracking-tighter leading-none">{report.overall_risk !== undefined ? report.overall_risk : 'N/A'}</span>
                <span className="text-lg font-bold mb-2 opacity-50">/100</span>
             </div>
 
@@ -119,7 +119,7 @@ export const ReportView: React.FC<ReportViewProps> = ({ report, onBack }) => {
 
         {/* --- RISK PILLARS --- */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div className="bg-[#0B1120] border border-slate-800/50 p-6 rounded-2xl">
+            <div className="bg-[#020617] border border-[#1e293b] p-6 rounded-2xl">
                 <div className="flex justify-between items-start mb-4">
                     <div className="p-2 bg-[#3B82F6]/10 rounded-lg"><BarChart size={20} className="text-[#3B82F6]" /></div>
                     <span className="text-xs font-mono text-slate-500">Weight: 40%</span>
@@ -132,7 +132,7 @@ export const ReportView: React.FC<ReportViewProps> = ({ report, onBack }) => {
                 </div>
             </div>
 
-            <div className="bg-[#0B1120] border border-slate-800/50 p-6 rounded-2xl">
+            <div className="bg-[#020617] border border-[#1e293b] p-6 rounded-2xl">
                 <div className="flex justify-between items-start mb-4">
                     <div className="p-2 bg-purple-500/10 rounded-lg"><Scale size={20} className="text-purple-500" /></div>
                     <span className="text-xs font-mono text-slate-500">Weight: 35%</span>
@@ -145,7 +145,7 @@ export const ReportView: React.FC<ReportViewProps> = ({ report, onBack }) => {
                 </div>
             </div>
 
-            <div className="bg-[#0B1120] border border-slate-800/50 p-6 rounded-2xl">
+            <div className="bg-[#020617] border border-[#1e293b] p-6 rounded-2xl">
                 <div className="flex justify-between items-start mb-4">
                     <div className="p-2 bg-[#10B981]/10 rounded-lg"><Briefcase size={20} className="text-[#10B981]" /></div>
                     <span className="text-xs font-mono text-slate-500">Weight: 25%</span>
@@ -167,7 +167,7 @@ export const ReportView: React.FC<ReportViewProps> = ({ report, onBack }) => {
 
             {/* FINANCIAL HEALTH CHART */}
             {chartData.length > 0 && (
-              <div className="bg-[#0B1120] border border-slate-800/50 rounded-2xl p-6">
+              <div className="bg-[#020617] border border-[#1e293b] rounded-2xl p-6">
                   <h4 className="text-[10px] font-mono uppercase tracking-[0.2em] text-slate-500 mb-6 flex justify-between items-center">
                   <span>Financial Health Trajectory</span>
                   <span className="text-[#3B82F6]">Trailing 12 Months</span>
@@ -195,7 +195,7 @@ export const ReportView: React.FC<ReportViewProps> = ({ report, onBack }) => {
               </div>
             )}
 
-            <div className="bg-[#0B1120] border border-slate-800/50 rounded-3xl p-10 relative overflow-hidden">
+            <div className="bg-[#020617] border border-[#1e293b] rounded-3xl p-10 relative overflow-hidden">
               <h3 className="text-white font-bold text-xl mb-6 flex items-center gap-3">
                 <Info size={20} className="text-[#3B82F6]" />
                 Executive Summary
@@ -227,22 +227,22 @@ export const ReportView: React.FC<ReportViewProps> = ({ report, onBack }) => {
             )}
             
             {/* FINANCIAL METRICS */}
-            <div className="bg-[#0B1120] border border-slate-800/50 rounded-2xl p-6">
+            <div className="bg-[#020617] border border-[#1e293b] rounded-2xl p-6">
                  <h4 className="text-[10px] font-mono uppercase tracking-[0.2em] text-slate-500 mb-4">Key Metrics</h4>
                  <div className="grid grid-cols-2 gap-4">
-                    <div className="p-4 bg-slate-800/30 rounded-xl border border-slate-800/50">
+                    <div className="p-4 bg-slate-800/30 rounded-xl border border-[#1e293b]">
                       <div className="text-[10px] uppercase text-slate-500 mb-2 font-bold tracking-widest">Debt/Equity</div>
                       <div className="text-xl font-mono text-white font-black">{displayMetric(report.metrics?.debt_to_equity)}</div>
                     </div>
-                    <div className="p-4 bg-slate-800/30 rounded-xl border border-slate-800/50">
+                    <div className="p-4 bg-slate-800/30 rounded-xl border border-[#1e293b]">
                       <div className="text-[10px] uppercase text-slate-500 mb-2 font-bold tracking-widest">Current Ratio</div>
                       <div className="text-xl font-mono text-white font-black">{displayMetric(report.metrics?.current_ratio)}</div>
                     </div>
-                    <div className="p-4 bg-slate-800/30 rounded-xl border border-slate-800/50">
+                    <div className="p-4 bg-slate-800/30 rounded-xl border border-[#1e293b]">
                       <div className="text-[10px] uppercase text-slate-500 mb-2 font-bold tracking-widest">Altman Z-Score</div>
                       <div className="text-xl font-mono text-white font-black">{displayMetric(report.metrics?.altman_z_score)}</div>
                     </div>
-                    <div className="p-4 bg-slate-800/30 rounded-xl border border-slate-800/50">
+                    <div className="p-4 bg-slate-800/30 rounded-xl border border-[#1e293b]">
                       <div className="text-[10px] uppercase text-slate-500 mb-2 font-bold tracking-widest">Interest Cov</div>
                       <div className="text-xl font-mono text-white font-black">{displayMetric(report.metrics?.interest_coverage)}</div>
                     </div>
@@ -250,13 +250,13 @@ export const ReportView: React.FC<ReportViewProps> = ({ report, onBack }) => {
             </div>
 
             {/* NEWS SENTIMENT TIMELINE */}
-            <div className="bg-[#0B1120] border border-slate-800/50 rounded-2xl p-6">
+            <div className="bg-[#020617] border border-[#1e293b] rounded-2xl p-6">
                 <h4 className="text-[10px] font-mono uppercase tracking-[0.2em] text-slate-500 mb-6">Recent Events</h4>
                 <div className="space-y-6 relative before:absolute before:inset-0 before:ml-2 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-800 before:to-transparent">
                     {/* Simulated Timeline Items */}
                     <div className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
-                        <div className="flex items-center justify-center w-4 h-4 rounded-full border-2 border-[#10B981] bg-[#0B1120] text-slate-500 shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow shadow-[#10B981]/50 z-10"></div>
-                        <div className="w-[calc(100%-2.5rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-xl border border-slate-800/50 bg-slate-800/30">
+                        <div className="flex items-center justify-center w-4 h-4 rounded-full border-2 border-[#10B981] bg-[#020617] text-slate-500 shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow shadow-[#10B981]/50 z-10"></div>
+                        <div className="w-[calc(100%-2.5rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-xl border border-[#1e293b] bg-slate-800/30">
                             <div className="flex items-center justify-between mb-1">
                                 <span className="font-bold text-white text-xs">Earnings Call</span>
                                 <time className="font-mono text-[10px] text-slate-500">2d ago</time>
@@ -265,8 +265,8 @@ export const ReportView: React.FC<ReportViewProps> = ({ report, onBack }) => {
                         </div>
                     </div>
                     <div className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
-                        <div className="flex items-center justify-center w-4 h-4 rounded-full border-2 border-red-500 bg-[#0B1120] text-slate-500 shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow shadow-red-500/50 z-10"></div>
-                        <div className="w-[calc(100%-2.5rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-xl border border-slate-800/50 bg-slate-800/30">
+                        <div className="flex items-center justify-center w-4 h-4 rounded-full border-2 border-red-500 bg-[#020617] text-slate-500 shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow shadow-red-500/50 z-10"></div>
+                        <div className="w-[calc(100%-2.5rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-xl border border-[#1e293b] bg-slate-800/30">
                             <div className="flex items-center justify-between mb-1">
                                 <span className="font-bold text-white text-xs">Class Action</span>
                                 <time className="font-mono text-[10px] text-slate-500">1w ago</time>
@@ -278,7 +278,7 @@ export const ReportView: React.FC<ReportViewProps> = ({ report, onBack }) => {
             </div>
 
             {/* Note on Data Source */}
-            <div className="p-6 rounded-2xl border border-slate-800/50 bg-[#0B1120]">
+            <div className="p-6 rounded-2xl border border-[#1e293b] bg-[#020617]">
                 <p className="text-[10px] leading-relaxed text-slate-500 font-mono">
                     DISCLAIMER: This forensic report is generated via neural cross-referencing of publicly available financial filings. Intended for institutional educational purposes only. Do not use for trading decisions.
                 </p>

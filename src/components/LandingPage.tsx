@@ -4,7 +4,7 @@ import { SignInButton } from '@clerk/clerk-react';
 
 export const LandingPage = () => {
   return (
-    <div className="min-h-screen bg-[#020202] text-slate-300 font-sans selection:bg-blue-500/30 overflow-hidden relative">
+    <div className="min-h-screen bg-[#020617] text-slate-300 font-sans selection:bg-blue-500/30 overflow-hidden relative">
       
       {/* --- BACKGROUND ARCHITECTURE --- */}
       {/* Subtle Grid Overlay */}
@@ -12,12 +12,12 @@ export const LandingPage = () => {
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
 
       {/* --- NAVIGATION --- */}
-      <nav className="flex justify-between items-center px-10 py-8 relative z-10 border-b border-white/5 bg-black/20 backdrop-blur-md">
+      <nav className="flex justify-between items-center px-10 py-8 relative z-10 border-b border-[#1e293b] bg-black/20 backdrop-blur-md">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-blue-600 rounded flex items-center justify-center shadow-[0_0_15px_rgba(37,99,235,0.4)]">
             <ShieldAlert size={18} className="text-white" />
           </div>
-          <span className="font-black tracking-tighter text-white text-2xl italic">VERIRISK</span>
+          <span className="font-black tracking-tighter text-white text-2xl">VERIRISK</span>
         </div>
         
         <div className="flex items-center gap-8">
@@ -40,7 +40,7 @@ export const LandingPage = () => {
              Institutional Risk Audit Engine v3.1
           </div>
           
-          <h1 className="text-7xl md:text-8xl font-black text-white tracking-tighter mb-8 leading-[0.9] italic">
+          <h1 className="text-7xl md:text-8xl font-black text-white tracking-tighter mb-8 leading-[0.9]">
             Institutional Grade <br />
             <span className="bg-gradient-to-r from-blue-500 via-emerald-400 to-emerald-500 bg-clip-text text-transparent bg-[size:200%_auto] animate-gradient-x">Forensic Intelligence</span>
           </h1>
@@ -55,7 +55,7 @@ export const LandingPage = () => {
                 Request Access <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
                 </button>
             </SignInButton>
-            <button className="px-10 py-5 rounded-2xl font-bold border border-white/10 hover:bg-white/5 transition-all text-sm">
+            <button className="px-10 py-5 rounded-2xl font-bold border border-[#1e293b] hover:bg-white/5 transition-all text-sm">
                 VIEW DOCUMENTATION
             </button>
           </div>
@@ -64,7 +64,7 @@ export const LandingPage = () => {
 
       {/* --- FEATURE TERMINAL GRID --- */}
       <section className="px-10 pb-32 relative z-10">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-px bg-white/10 border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-px bg-white/10 border border-[#1e293b] rounded-3xl overflow-hidden shadow-2xl">
           {[
             { 
               title: "Solvency Shield",
@@ -82,7 +82,7 @@ export const LandingPage = () => {
               icon: <Globe className="text-purple-500" size={24} />
             }
           ].map((feature, i) => (
-            <div key={i} className="bg-[#050505] p-12 hover:bg-[#080808] transition-colors group">
+            <div key={i} className="bg-[#020617] p-12 hover:bg-[#020617] transition-colors group">
               <div className="mb-6 opacity-50 group-hover:opacity-100 transition-opacity">{feature.icon}</div>
               <h3 className="text-white font-bold text-xl mb-3 tracking-tight">{feature.title}</h3>
               <p className="text-slate-500 text-sm leading-relaxed">{feature.desc}</p>
@@ -96,11 +96,11 @@ export const LandingPage = () => {
                 <span className="text-[10px] text-slate-600 uppercase tracking-widest font-mono">Neural Handshake</span>
                 <span className="text-sm text-blue-400 font-bold">STABLE</span>
             </div>
-            <div className="flex flex-col items-center border-l border-white/10 pl-12">
+            <div className="flex flex-col items-center border-l border-[#1e293b] pl-12">
                 <span className="text-[10px] text-slate-600 uppercase tracking-widest font-mono">Processing Latency</span>
                 <span className="text-sm text-white font-bold">142ms</span>
             </div>
-            <div className="flex flex-col items-center border-l border-white/10 pl-12">
+            <div className="flex flex-col items-center border-l border-[#1e293b] pl-12">
                 <span className="text-[10px] text-slate-600 uppercase tracking-widest font-mono">Active Nodes</span>
                 <span className="text-sm text-white font-bold">1,024</span>
             </div>
