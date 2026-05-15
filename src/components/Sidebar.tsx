@@ -5,6 +5,7 @@ export function Sidebar({ activePage, onNavigate }: any) {
     { id: 'dashboard', icon: LayoutDashboard, label: 'Dashboard' },
     { id: 'compare', icon: Scale, label: 'Benchmarking' },
     { id: 'reports', icon: FileText, label: 'Audit History' },
+    { id: 'financials', icon: FileText, label: 'Financials' },
     { id: 'security', icon: ShieldAlert, label: 'Security' },
   ];
 

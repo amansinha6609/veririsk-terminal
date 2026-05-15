@@ -11,6 +11,7 @@ import { SettingsPage } from "./components/SettingsPage";
 import { SecurityPage } from "./components/SecurityPage";
 import { AccountActivityPage } from "./components/AccountActivityPage";
 import { NetworkGraphPage } from "./components/NetworkGraphPage";
+import { FinancialsModule } from "./components/FinancialsModule";
 
 // Enhanced Forensic Interface to match our Z-Score Backend
 export interface ForensicReport {
@@ -87,6 +88,17 @@ export default function App() {
                   className="h-full"
                 >
                   <NetworkGraphPage />
+                </motion.div>
+              ) : activePage === "financials" ? (
+                <motion.div
+                  key="financialsModule"
+                  initial={{ opacity: 0, scale: 0.98 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 1.02 }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
+                  className="h-full"
+                >
+                  <FinancialsModule />
                 </motion.div>
               ) : activePage === "overview" && selectedReport ? (
                 /* VIEWING A SPECIFIC AUDIT */
