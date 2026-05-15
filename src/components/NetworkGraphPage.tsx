@@ -54,9 +54,9 @@ export function NetworkGraphPage() {
 
   return (
     <div className="flex flex-col h-full bg-[#020617] text-slate-300 font-sans">
-      <header className="px-10 py-8 border-b border-slate-800/50 bg-[#0B1120] flex items-center justify-between z-10 relative">
+      <header className="px-10 py-8 border-b border-[#1e293b] bg-[#020617] flex items-center justify-between z-10 relative">
         <div>
-          <h2 className="text-3xl font-black text-white tracking-tighter italic mb-1">Entity <span className="text-[#3B82F6]">Network</span></h2>
+          <h2 className="text-3xl font-black text-white tracking-tighter mb-1">Entity <span className="text-[#3B82F6]">Network</span></h2>
           <p className="text-slate-500 font-mono text-xs uppercase tracking-widest">Visualizing corporate relationships and risk propagation.</p>
         </div>
         <div className="flex gap-3">
@@ -65,16 +65,16 @@ export function NetworkGraphPage() {
                 <input
                     type="text"
                     placeholder="Find node..."
-                    className="w-48 bg-[#020617] border border-slate-800 rounded-lg py-2 pl-10 pr-4 text-xs text-white focus:outline-none focus:border-[#3B82F6]/50 transition-colors"
+                    className="w-48 bg-[#020617] border border-[#1e293b] rounded-lg py-2 pl-10 pr-4 text-xs text-white focus:outline-none focus:border-[#3B82F6]/50 transition-colors"
                 />
             </div>
-            <button className="p-2 border border-slate-800 rounded-lg hover:bg-slate-800 transition-colors text-slate-400">
+            <button className="p-2 border border-[#1e293b] rounded-lg hover:bg-slate-800 transition-colors text-slate-400">
               <Share2 size={16} />
             </button>
-            <button className="p-2 border border-slate-800 rounded-lg hover:bg-slate-800 transition-colors text-slate-400">
+            <button className="p-2 border border-[#1e293b] rounded-lg hover:bg-slate-800 transition-colors text-slate-400">
               <Download size={16} />
             </button>
-            <button className="p-2 border border-slate-800 rounded-lg hover:bg-slate-800 transition-colors text-slate-400">
+            <button className="p-2 border border-[#1e293b] rounded-lg hover:bg-slate-800 transition-colors text-slate-400">
               <Maximize size={16} />
             </button>
         </div>
@@ -102,7 +102,7 @@ export function NetworkGraphPage() {
         </div>
 
         {/* Legend Overlay */}
-        <div className="absolute bottom-10 left-10 z-20 bg-[#0B1120] border border-slate-800/50 p-4 rounded-xl shadow-2xl">
+        <div className="absolute bottom-10 left-10 z-20 bg-[#020617] border border-[#1e293b] p-4 rounded-xl shadow-2xl">
             <h4 className="text-[10px] font-mono uppercase tracking-[0.2em] text-slate-500 mb-3 font-bold">Node Typology</h4>
             <div className="space-y-2">
                 <div className="flex items-center gap-2"><div className="w-3 h-3 rounded-full bg-[#3B82F6]"></div><span className="text-xs text-slate-400">Corporate Entity</span></div>

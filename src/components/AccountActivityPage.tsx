@@ -13,22 +13,22 @@ export function AccountActivityPage() {
   return (
     <div className="max-w-5xl mx-auto space-y-8 pb-20 text-slate-300 font-sans">
       <header className="mb-12">
-        <h2 className="text-4xl font-black text-white tracking-tighter italic mb-2">Audit <span className="text-[#3B82F6]">Log</span></h2>
+        <h2 className="text-4xl font-black text-white tracking-tighter mb-2">Audit <span className="text-[#3B82F6]">Log</span></h2>
         <p className="text-slate-500 font-mono text-sm uppercase tracking-widest">Immutable record of system interactions.</p>
       </header>
 
       {/* Control Bar */}
-      <div className="flex flex-col md:flex-row gap-4 justify-between items-center bg-[#0B1120] border border-slate-800/50 p-4 rounded-2xl">
+      <div className="flex flex-col md:flex-row gap-4 justify-between items-center bg-[#020617] border border-[#1e293b] p-4 rounded-2xl">
          <div className="flex items-center gap-4 w-full md:w-auto">
             <div className="relative flex-1 md:w-64">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={16} />
                 <input
                     type="text"
                     placeholder="Search logs (e.g. AL-9021)..."
-                    className="w-full bg-[#020617] border border-slate-800 rounded-lg py-2 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-[#3B82F6]/50 transition-colors"
+                    className="w-full bg-[#020617] border border-[#1e293b] rounded-lg py-2 pl-10 pr-4 text-sm text-white focus:outline-none focus:border-[#3B82F6]/50 transition-colors"
                 />
             </div>
-            <button className="p-2 border border-slate-800 rounded-lg hover:bg-slate-800 transition-colors text-slate-400">
+            <button className="p-2 border border-[#1e293b] rounded-lg hover:bg-slate-800 transition-colors text-slate-400">
                 <Filter size={18} />
             </button>
          </div>
@@ -38,10 +38,10 @@ export function AccountActivityPage() {
       </div>
 
       {/* Log Table */}
-      <div className="bg-[#0B1120] border border-slate-800/50 rounded-2xl overflow-hidden">
+      <div className="bg-[#020617] border border-[#1e293b] rounded-2xl overflow-hidden">
         <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
-                <thead className="bg-[#020617] border-b border-slate-800 text-[10px] uppercase tracking-widest text-slate-500 font-bold font-mono">
+                <thead className="bg-[#020617] border-b border-[#1e293b] text-[10px] uppercase tracking-widest text-slate-500 font-bold font-mono">
                     <tr>
                         <th className="px-6 py-4">Event ID</th>
                         <th className="px-6 py-4">Action</th>

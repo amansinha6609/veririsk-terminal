@@ -23,7 +23,7 @@ export function SecurityPage() {
           { label: "API Latency", val: "142ms", icon: Activity, color: "text-blue-400" },
           { label: "Database", val: "Encrypted", icon: ShieldCheck, color: "text-purple-400" },
         ].map((stat, i) => (
-          <div key={i} className="bg-[#0a192f] border border-white/5 p-6 rounded-[32px] flex items-center gap-5">
+          <div key={i} className="bg-[#020617] border border-[#1e293b] p-6 rounded-[32px] flex items-center gap-5">
             <div className={`p-4 bg-white/5 rounded-2xl ${stat.color}`}><stat.icon size={24} /></div>
             <div>
               <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">{stat.label}</p>
@@ -34,8 +34,8 @@ export function SecurityPage() {
       </div>
 
       {/* 2. ACCESS LOGS */}
-      <div className="bg-[#0a192f] border border-white/5 rounded-[40px] overflow-hidden">
-        <div className="p-8 border-b border-white/5 flex justify-between items-center">
+      <div className="bg-[#020617] border border-[#1e293b] rounded-[40px] overflow-hidden">
+        <div className="p-8 border-b border-[#1e293b] flex justify-between items-center">
           <h3 className="text-lg font-bold">Audit Trail</h3>
           <button className="text-blue-500 hover:text-blue-400 transition-all flex items-center gap-2 text-xs font-bold uppercase tracking-widest">
             <RefreshCw size={14} /> Rotate Keys

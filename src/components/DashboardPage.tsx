@@ -80,7 +80,7 @@ export const DashboardPage: React.FC<DashboardProps> = ({ onSelectReport }) => {
     <div className="flex flex-col h-full text-slate-300 font-sans relative">
       
       {/* MARKET TICKER TOP BAR */}
-      <div className="h-8 border-b border-slate-800/50 bg-[#0B1120] overflow-hidden flex items-center absolute top-0 left-0 right-0 z-10">
+      <div className="h-8 border-b border-[#1e293b] bg-[#020617] overflow-hidden flex items-center absolute top-0 left-0 right-0 z-10">
         <motion.div
           animate={{ x: [0, -1000] }}
           transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
@@ -107,7 +107,7 @@ export const DashboardPage: React.FC<DashboardProps> = ({ onSelectReport }) => {
         {!loading ? (
           <div className="flex flex-col items-center h-full mt-10">
               <div className="text-center mb-12">
-                  <h1 className="text-5xl font-black text-white mb-4 tracking-tighter italic">Command <span className="text-[#3B82F6]">Center</span></h1>
+                  <h1 className="text-5xl font-black text-white mb-4 tracking-tighter">Command <span className="text-[#3B82F6]">Center</span></h1>
                   <p className="text-slate-400">Initiate global entity search for precision intelligence triangulation.</p>
               </div>
 
@@ -118,10 +118,10 @@ export const DashboardPage: React.FC<DashboardProps> = ({ onSelectReport }) => {
                   onChange={(e) => setQuery(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
                   placeholder="Search entity database or enter ticker..."
-                  className="w-full bg-[#0B1120] border border-slate-700 rounded-2xl py-6 pl-16 pr-6 text-lg focus:outline-none focus:border-[#3B82F6]/50 focus:ring-1 focus:ring-[#3B82F6]/50 transition-all shadow-2xl text-white placeholder-slate-600"
+                  className="w-full bg-[#020617] border border-[#1e293b] rounded-2xl py-6 pl-16 pr-6 text-lg focus:outline-none focus:border-[#3B82F6]/50 focus:ring-1 focus:ring-[#3B82F6]/50 transition-all shadow-2xl text-white placeholder-slate-600"
                 />
                 <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
-                  <kbd className="hidden md:inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-xs font-mono text-slate-400">
+                  <kbd className="hidden md:inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-slate-800 border border-[#1e293b] text-xs font-mono text-slate-400">
                     ENTER ↵
                   </kbd>
                 </div>
@@ -140,7 +140,7 @@ export const DashboardPage: React.FC<DashboardProps> = ({ onSelectReport }) => {
                     <button
                       key={i}
                       onClick={() => handleSearch(item.name)}
-                      className="bg-[#0B1120] border border-slate-800/80 p-5 rounded-2xl hover:border-slate-600 transition-all group flex flex-col text-left"
+                      className="bg-[#020617] border border-[#1e293b] p-5 rounded-2xl hover:border-slate-600 transition-all group flex flex-col text-left"
                     >
                       <div className="flex items-center justify-between w-full mb-4">
                          <span className={`text-[10px] font-mono uppercase tracking-widest px-2 py-0.5 rounded border ${item.statusColor}`}>
@@ -159,14 +159,14 @@ export const DashboardPage: React.FC<DashboardProps> = ({ onSelectReport }) => {
               <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                       <Zap size={24} className="text-[#3B82F6] animate-pulse" />
-                      <h2 className="text-2xl font-black text-white tracking-tighter uppercase italic">Neural Triangulation: {query}</h2>
+                      <h2 className="text-2xl font-black text-white tracking-tighter uppercase">Neural Triangulation: {query}</h2>
                   </div>
                   <div className="px-4 py-1.5 bg-[#3B82F6]/10 border border-[#3B82F6]/20 text-[#3B82F6] text-[10px] font-mono rounded-full flex items-center gap-2 uppercase tracking-widest">
                       <Loader2 className="animate-spin" size={14}/> Processing Handshake
                   </div>
               </div>
 
-              <div className="bg-[#0B1120] border border-slate-800 rounded-3xl p-8 shadow-2xl relative overflow-hidden">
+              <div className="bg-[#020617] border border-[#1e293b] rounded-3xl p-8 shadow-2xl relative overflow-hidden">
                   {/* Decorative Scanline */}
                   <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_0%,rgba(59,130,246,0.05)_50%,transparent_100%)] h-[10px] animate-[scan_2s_ease-in-out_infinite]" />
                   <div className="font-mono text-sm leading-relaxed text-slate-400 whitespace-pre-wrap h-96 overflow-y-auto scrollbar-hide relative z-10">

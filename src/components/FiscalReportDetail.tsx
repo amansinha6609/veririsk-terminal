@@ -36,11 +36,11 @@ export const FiscalReportDetail: React.FC<FiscalReportDetailProps> = ({ report, 
     <div className="h-full overflow-y-auto bg-[#020617] text-slate-300 font-sans selection:bg-emerald-500/30">
 
       {/* HEADER */}
-      <div className="sticky top-0 z-20 bg-[#020617]/90 backdrop-blur-md border-b border-white/5 p-6 flex items-center justify-between">
+      <div className="sticky top-0 z-20 bg-[#020617]/90 backdrop-blur-md border-b border-[#1e293b] p-6 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <button
             onClick={onBack}
-            className="p-3 hover:bg-white/5 rounded-xl transition-all border border-transparent hover:border-white/10"
+            className="p-3 hover:bg-white/5 rounded-xl transition-all border border-transparent hover:border-[#1e293b]"
           >
             <ArrowLeft size={24} className="text-slate-400" />
           </button>
@@ -66,8 +66,8 @@ export const FiscalReportDetail: React.FC<FiscalReportDetailProps> = ({ report, 
       <div className="p-8 max-w-6xl mx-auto" ref={reportRef}>
 
         {/* EXECUTIVE SUMMARY */}
-        <div className="bg-[#0B1120] border border-white/5 rounded-2xl p-8 mb-8 shadow-xl">
-          <h2 className="text-xl font-black text-white uppercase mb-4 border-b border-white/5 pb-4">Executive Summary</h2>
+        <div className="bg-[#020617] border border-[#1e293b] rounded-2xl p-8 mb-8 shadow-xl">
+          <h2 className="text-xl font-black text-white uppercase mb-4 border-b border-[#1e293b] pb-4">Executive Summary</h2>
           <p className="text-slate-400 leading-relaxed font-bold text-sm">
             The fiscal year 2023 demonstrated resilient operational performance despite macroeconomic headwinds. The organization maintained strong liquidity positions and successfully optimized its debt profile. Strategic capital allocation yielded a 14% improvement in EBITDA margins, while gross revenue expanded by 8% year-over-year. Key risk indicators remain well within acceptable thresholds, supported by proactive cost management initiatives and sustained market demand across core business segments.
           </p>
@@ -76,7 +76,7 @@ export const FiscalReportDetail: React.FC<FiscalReportDetailProps> = ({ report, 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
 
           {/* FISCAL HEALTH INDEX */}
-          <div className="bg-[#0B1120] border border-white/5 rounded-2xl p-8 shadow-xl lg:col-span-1 flex flex-col items-center">
+          <div className="bg-[#020617] border border-[#1e293b] rounded-2xl p-8 shadow-xl lg:col-span-1 flex flex-col items-center">
             <h2 className="text-xl font-black text-white uppercase mb-6 w-full text-left">Fiscal Health Index</h2>
 
             <div className="relative w-48 h-48 mb-8">
@@ -130,11 +130,11 @@ export const FiscalReportDetail: React.FC<FiscalReportDetailProps> = ({ report, 
           </div>
 
           {/* STATEMENT OF OPERATIONS */}
-          <div className="bg-[#0B1120] border border-white/5 rounded-2xl p-8 shadow-xl lg:col-span-2 overflow-x-auto">
+          <div className="bg-[#020617] border border-[#1e293b] rounded-2xl p-8 shadow-xl lg:col-span-2 overflow-x-auto">
              <h2 className="text-xl font-black text-white uppercase mb-6">Statement of Operations (Millions USD)</h2>
              <table className="w-full text-left border-collapse">
                <thead>
-                 <tr className="border-b border-white/5">
+                 <tr className="border-b border-[#1e293b]">
                    <th className="py-4 text-xs font-bold text-slate-500 uppercase tracking-widest">Metric</th>
                    <th className="py-4 text-xs font-bold text-slate-500 uppercase tracking-widest text-right">FY 2023</th>
                    <th className="py-4 text-xs font-bold text-slate-500 uppercase tracking-widest text-right">FY 2022</th>
@@ -142,25 +142,25 @@ export const FiscalReportDetail: React.FC<FiscalReportDetailProps> = ({ report, 
                  </tr>
                </thead>
                <tbody className="text-sm font-bold text-slate-300">
-                 <tr className="border-b border-white/5 hover:bg-white/5 transition-colors">
+                 <tr className="border-b border-[#1e293b] hover:bg-white/5 transition-colors">
                    <td className="py-4">Total Revenue</td>
                    <td className="py-4 text-right text-white">4,250.0</td>
                    <td className="py-4 text-right">3,935.0</td>
                    <td className="py-4 text-right text-[#10B981]">+8.0%</td>
                  </tr>
-                 <tr className="border-b border-white/5 hover:bg-white/5 transition-colors">
+                 <tr className="border-b border-[#1e293b] hover:bg-white/5 transition-colors">
                    <td className="py-4">Gross Profit</td>
                    <td className="py-4 text-right text-white">1,870.0</td>
                    <td className="py-4 text-right">1,650.0</td>
                    <td className="py-4 text-right text-[#10B981]">+13.3%</td>
                  </tr>
-                 <tr className="border-b border-white/5 hover:bg-white/5 transition-colors">
+                 <tr className="border-b border-[#1e293b] hover:bg-white/5 transition-colors">
                    <td className="py-4">Operating Income</td>
                    <td className="py-4 text-right text-white">920.0</td>
                    <td className="py-4 text-right">810.0</td>
                    <td className="py-4 text-right text-[#10B981]">+13.5%</td>
                  </tr>
-                 <tr className="border-b border-white/5 hover:bg-white/5 transition-colors">
+                 <tr className="border-b border-[#1e293b] hover:bg-white/5 transition-colors">
                    <td className="py-4">EBITDA</td>
                    <td className="py-4 text-right text-white">1,150.0</td>
                    <td className="py-4 text-right">1,008.0</td>
@@ -188,7 +188,7 @@ export const FiscalReportDetail: React.FC<FiscalReportDetailProps> = ({ report, 
               { title: "Cash Flow", size: "0.9 MB" },
               { title: "Risk Disclosure", size: "2.1 MB" }
             ].map((doc, i) => (
-              <div key={i} className="bg-[#0B1120] border border-white/5 p-4 rounded-xl flex flex-col items-center justify-center text-center hover:border-[#3B82F6]/30 transition-all cursor-pointer group">
+              <div key={i} className="bg-[#020617] border border-[#1e293b] p-4 rounded-xl flex flex-col items-center justify-center text-center hover:border-[#3B82F6]/30 transition-all cursor-pointer group">
                 <FileText size={32} className="text-slate-500 mb-3 group-hover:text-[#3B82F6] transition-colors" />
                 <h3 className="text-sm font-bold text-white mb-1">{doc.title}</h3>
                 <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{doc.size} • PDF</span>
