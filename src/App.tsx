@@ -1,14 +1,19 @@
 import { SignedIn, SignedOut } from "@clerk/clerk-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 // Component Imports
 import { LandingPage } from "./components/LandingPage";
 import { DashboardPage } from "./components/DashboardPage";
 import { ReportView } from "./components/ReportView";
+import { Sidebar } from "./components/Sidebar";
+import { SettingsPage } from "./components/SettingsPage";
+import { SecurityPage } from "./components/SecurityPage";
+import { AccountActivityPage } from "./components/AccountActivityPage";
+import { NetworkGraphPage } from "./components/NetworkGraphPage";
 
 // Enhanced Forensic Interface to match our Z-Score Backend
-interface ForensicReport {
+export interface ForensicReport {
   company_name: string;
   overall_risk: number;
   summary: string;
@@ -26,50 +31,102 @@ interface ForensicReport {
 
 export default function App() {
   const [selectedReport, setSelectedReport] = useState<ForensicReport | null>(null);
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
-
-  // Transition Effect: Simulates 'Neural Linking' when a report is selected
-  useEffect(() => {
-    if (selectedReport) {
-      setIsAnalyzing(true);
-      const timer = setTimeout(() => setIsAnalyzing(false), 800);
-      return () => clearTimeout(timer);
-    }
-  }, [selectedReport]);
+  const [activePage, setActivePage] = useState("overview");
 
   return (
-    <main className="min-h-screen bg-[#020202] text-slate-300 font-mono selection:bg-emerald-500/30">
-      
-        <AnimatePresence mode="wait">
-          {selectedReport ? (
-            /* VIEWING A SPECIFIC AUDIT */
-            <motion.div
-              key="reportView"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
-            >
-              <ReportView
-                report={selectedReport}
-                onBack={() => setSelectedReport(null)}
-              />
-            </motion.div>
-          ) : (
-            /* THE MAIN SEARCH COMMAND CENTER */
-            <motion.div
-              key="dashboardPage"
-              initial={{ opacity: 0, scale: 0.98 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 1.02 }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
-            >
-              <DashboardPage
-                onSelectReport={(report: ForensicReport) => setSelectedReport(report)}
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>
+    <main className="min-h-screen bg-[#020617] text-slate-300 font-sans selection:bg-emerald-500/30">
+      <SignedOut>
+        <LandingPage />
+      </SignedOut>
+
+      <SignedIn>
+        <div className="flex h-screen overflow-hidden">
+          <Sidebar activePage={activePage} onNavigate={setActivePage} />
+
+          <div className="flex-1 overflow-y-auto relative bg-[#020617]">
+            <AnimatePresence mode="wait">
+              {activePage === "settings" ? (
+                <motion.div
+                  key="settingsPage"
+                  initial={{ opacity: 0, scale: 0.98 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 1.02 }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
+                >
+                  <SettingsPage onNavigateToSecurity={() => setActivePage('security')} />
+                </motion.div>
+              ) : activePage === "security" ? (
+                <motion.div
+                  key="securityPage"
+                  initial={{ opacity: 0, scale: 0.98 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 1.02 }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
+                  className="pt-16 px-8"
+                >
+                  <SecurityPage />
+                </motion.div>
+              ) : activePage === "account_activity" ? (
+                <motion.div
+                  key="accountActivityPage"
+                  initial={{ opacity: 0, scale: 0.98 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 1.02 }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
+                  className="pt-16 px-8"
+                >
+                  <AccountActivityPage />
+                </motion.div>
+              ) : activePage === "network_graph" ? (
+                <motion.div
+                  key="networkGraphPage"
+                  initial={{ opacity: 0, scale: 0.98 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 1.02 }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
+                  className="h-full"
+                >
+                  <NetworkGraphPage />
+                </motion.div>
+              ) : activePage === "overview" && selectedReport ? (
+                /* VIEWING A SPECIFIC AUDIT */
+                <motion.div
+                  key="reportView"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
+                >
+                  <ReportView
+                    report={selectedReport}
+                    onBack={() => setSelectedReport(null)}
+                  />
+                </motion.div>
+              ) : (
+                /* THE MAIN SEARCH COMMAND CENTER OR PLACEHOLDERS */
+                <motion.div
+                  key="dashboardPage"
+                  initial={{ opacity: 0, scale: 0.98 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 1.02 }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
+                  className="h-full"
+                >
+                  {activePage === "overview" ? (
+                    <DashboardPage
+                      onSelectReport={(report: ForensicReport) => setSelectedReport(report)}
+                    />
+                  ) : (
+                    <div className="flex items-center justify-center h-full text-slate-500">
+                      {activePage.replace('_', ' ').toUpperCase()} View Under Construction
+                    </div>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      </SignedIn>
     </main>
   );
 }
