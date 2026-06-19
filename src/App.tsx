@@ -134,7 +134,7 @@ export default function App() {
                   transition={{ duration: 0.4, ease: "easeOut" }}
                   className="h-full"
                 >
-                  {activePage === "overview" ? (
+                  {activePage === "overview" || activePage === "dashboard" ? (
                     <DashboardPage
                       onSelectReport={(report: ForensicReport) => setSelectedReport(report)}
                     />
