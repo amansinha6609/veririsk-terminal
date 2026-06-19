@@ -25,12 +25,71 @@ export const FiscalReportDetail: React.FC<FiscalReportDetailProps> = ({ report, 
     html2pdf().set(opt).from(reportRef.current).save();
   };
 
-  const healthScore = 84;
+  // Determine if we have dynamic Z-Score Data
+  let healthScore = 84;
+  let gaugeScoreText = "EXCELLENT";
+  let gaugeColor = "#10B981"; // Default Emerald
+
+  if (report.dynamicData && report.dynamicData.z_score !== undefined && report.dynamicData.z_score !== null) {
+    healthScore = report.dynamicData.z_score;
+    // Cap mapping for visual gauge if we want, but since Z-Score is typically 0-5, let's map it conceptually
+    // Wait, the gauge currently uses percentages 0-100.
+    // So let's map Z-Score to a 0-100 scale for gauge, or just show Z-Score directly.
+    // Given the gauge expects 'value' and '100-value', if we pass Z-Score directly it'll look weird if it's "3.0" and "97".
+    // Let's use a standard mapping: Z > 3 is great (100%), Z=1.8 is bad (0%).
+    // Actually, I'll pass the exact Z-score to the text, and map the circle appropriately.
+    if (healthScore > 2.99) {
+      gaugeScoreText = "SAFE ZONE";
+      gaugeColor = "#10B981";
+    } else if (healthScore >= 1.81 && healthScore <= 2.99) {
+      gaugeScoreText = "GREY ZONE (CAUTION)";
+      gaugeColor = "#F59E0B";
+    } else {
+      gaugeScoreText = "DISTRESS ZONE (HIGH RISK)";
+      gaugeColor = "#EF4444";
+    }
+  }
+
+  // Calculate visual percentage for gauge
+  const maxZ = 5;
+  const clampedZ = Math.max(0, Math.min(healthScore, maxZ));
+  const gaugePercent = (clampedZ / maxZ) * 100;
+
   const gaugeData = [
-    { name: 'Score', value: healthScore },
-    { name: 'Remaining', value: 100 - healthScore }
+    { name: 'Score', value: report.dynamicData?.z_score !== null && report.dynamicData?.z_score !== undefined ? gaugePercent : healthScore },
+    { name: 'Remaining', value: 100 - (report.dynamicData?.z_score !== null && report.dynamicData?.z_score !== undefined ? gaugePercent : healthScore) }
   ];
-  const COLORS = ['#10B981', '#1e293b']; // Emerald for score, slate for remaining
+  const COLORS = [gaugeColor, '#1e293b'];
+
+  const formatVal = (val: number | null | undefined) => {
+    if (val === null || val === undefined) return "N/A";
+    return val.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  };
+
+  const calculateVariance = (current: number | null | undefined, previous: number | null | undefined) => {
+    if (current === null || current === undefined || previous === null || previous === undefined || previous === 0) return "N/A";
+    const variance = ((current - previous) / previous) * 100;
+    const sign = variance > 0 ? "+" : "";
+    const color = variance > 0 ? "text-[#10B981]" : variance < 0 ? "text-[#EF4444]" : "text-slate-400";
+    return <span className={`font-black ${color}`}>{sign}{variance.toFixed(1)}%</span>;
+  };
+
+  const getStatementRow = (label: string, defaultCurr: number, defaultPrev: number) => {
+    let curr = defaultCurr;
+    let prev = defaultPrev;
+    if (report.dynamicData && report.dynamicData.statement && report.dynamicData.statement[label]) {
+      curr = report.dynamicData.statement[label].current;
+      prev = report.dynamicData.statement[label].previous;
+    }
+    return (
+      <tr className="border-b border-[#1e293b] hover:bg-white/5 transition-colors">
+        <td className="py-4">{label}</td>
+        <td className="py-4 text-right text-white">{formatVal(curr)}</td>
+        <td className="py-4 text-right">{formatVal(prev)}</td>
+        <td className="py-4 text-right">{calculateVariance(curr, prev)}</td>
+      </tr>
+    );
+  };
 
   return (
     <div className="h-full overflow-y-auto bg-[#020617] text-slate-300 font-sans selection:bg-emerald-500/30">
@@ -101,8 +160,12 @@ export const FiscalReportDetail: React.FC<FiscalReportDetailProps> = ({ report, 
                 </PieChart>
               </ResponsiveContainer>
               <div className="absolute inset-0 flex flex-col items-center justify-center -mt-8">
-                <span className="text-5xl font-black text-white tracking-tighter">{healthScore}</span>
-                <span className="text-xs font-bold text-slate-500 uppercase tracking-widest mt-1">Excellent</span>
+                <span className="text-5xl font-black text-white tracking-tighter" style={{ color: gaugeColor }}>
+                  {report.dynamicData && report.dynamicData.z_score !== null && report.dynamicData.z_score !== undefined ? report.dynamicData.z_score : healthScore}
+                </span>
+                <span className="text-xs font-bold uppercase tracking-widest mt-1 text-center" style={{ color: gaugeColor }}>
+                  {gaugeScoreText}
+                </span>
               </div>
             </div>
 
@@ -136,41 +199,21 @@ export const FiscalReportDetail: React.FC<FiscalReportDetailProps> = ({ report, 
                <thead>
                  <tr className="border-b border-[#1e293b]">
                    <th className="py-4 text-xs font-bold text-slate-500 uppercase tracking-widest">Metric</th>
-                   <th className="py-4 text-xs font-bold text-slate-500 uppercase tracking-widest text-right">FY 2023</th>
-                   <th className="py-4 text-xs font-bold text-slate-500 uppercase tracking-widest text-right">FY 2022</th>
+                   <th className="py-4 text-xs font-bold text-slate-500 uppercase tracking-widest text-right">Current</th>
+                   <th className="py-4 text-xs font-bold text-slate-500 uppercase tracking-widest text-right">Previous</th>
                    <th className="py-4 text-xs font-bold text-slate-500 uppercase tracking-widest text-right">Variance</th>
                  </tr>
                </thead>
                <tbody className="text-sm font-bold text-slate-300">
-                 <tr className="border-b border-[#1e293b] hover:bg-white/5 transition-colors">
-                   <td className="py-4">Total Revenue</td>
-                   <td className="py-4 text-right text-white">4,250.0</td>
-                   <td className="py-4 text-right">3,935.0</td>
-                   <td className="py-4 text-right text-[#10B981]">+8.0%</td>
-                 </tr>
-                 <tr className="border-b border-[#1e293b] hover:bg-white/5 transition-colors">
-                   <td className="py-4">Gross Profit</td>
-                   <td className="py-4 text-right text-white">1,870.0</td>
-                   <td className="py-4 text-right">1,650.0</td>
-                   <td className="py-4 text-right text-[#10B981]">+13.3%</td>
-                 </tr>
-                 <tr className="border-b border-[#1e293b] hover:bg-white/5 transition-colors">
-                   <td className="py-4">Operating Income</td>
-                   <td className="py-4 text-right text-white">920.0</td>
-                   <td className="py-4 text-right">810.0</td>
-                   <td className="py-4 text-right text-[#10B981]">+13.5%</td>
-                 </tr>
-                 <tr className="border-b border-[#1e293b] hover:bg-white/5 transition-colors">
-                   <td className="py-4">EBITDA</td>
-                   <td className="py-4 text-right text-white">1,150.0</td>
-                   <td className="py-4 text-right">1,008.0</td>
-                   <td className="py-4 text-right text-[#10B981]">+14.0%</td>
-                 </tr>
+                 {getStatementRow("Total Revenue", 4250.0, 3935.0)}
+                 {getStatementRow("Gross Profit", 1870.0, 1650.0)}
+                 {getStatementRow("Operating Income", 920.0, 810.0)}
+                 {getStatementRow("EBITDA", 1150.0, 1008.0)}
                  <tr className="hover:bg-white/5 transition-colors">
                    <td className="py-4 font-black text-white">Net Income</td>
-                   <td className="py-4 text-right font-black text-[#10B981]">680.0</td>
-                   <td className="py-4 text-right">590.0</td>
-                   <td className="py-4 text-right font-black text-[#10B981]">+15.2%</td>
+                   <td className="py-4 text-right font-black text-white">{formatVal(report.dynamicData?.statement?.["Net Income"]?.current ?? 680.0)}</td>
+                   <td className="py-4 text-right">{formatVal(report.dynamicData?.statement?.["Net Income"]?.previous ?? 590.0)}</td>
+                   <td className="py-4 text-right">{calculateVariance(report.dynamicData?.statement?.["Net Income"]?.current ?? 680.0, report.dynamicData?.statement?.["Net Income"]?.previous ?? 590.0)}</td>
                  </tr>
                </tbody>
              </table>
