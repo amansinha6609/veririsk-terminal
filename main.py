@@ -121,6 +121,10 @@ async def forensic_audit_generator(company_name: str):
         yield f"data: {json.dumps({'text': f'Audit Interrupted: {str(e)}', 'overall_risk': 44})}\n\n"
 
 # --- 4. API ENDPOINTS ---
+
+from routers import upload
+app.include_router(upload.router)
+
 @app.post("/api/v1/analyze")
 async def analyze(request: Request):
     try:

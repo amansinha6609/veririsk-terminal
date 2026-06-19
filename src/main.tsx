@@ -5,7 +5,7 @@ import './index.css'
 import { ClerkProvider } from '@clerk/clerk-react'
 
 // Check both the environment variable and a hardcoded string just in case
-const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY || 'pk_test_ZGV2ZWxvcGVkLW11bGV0LTM3LmNsZXJrLmFjY291bnRzLmRldiQ'
+const PUBLISHABLE_KEY = 'pk_test_ZGV2ZWxvcGVkLW11bGV0LTM3LmNsZXJrLmFjY291bnRzLmRldiQ'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

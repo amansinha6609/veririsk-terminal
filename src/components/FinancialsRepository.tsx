@@ -5,11 +5,12 @@ import { motion } from 'framer-motion';
 export interface Report {
   id: string;
   title: string;
-  type: 'PDF' | 'XLSX';
+  type: 'PDF' | 'XLSX' | 'CSV';
   size: string;
   date: string;
-  category: 'Annual' | 'Quarterly' | 'Audit';
+  category: 'Annual' | 'Quarterly' | 'Audit' | 'Upload';
   locked?: boolean;
+  dynamicData?: any; // To pass along backend parsed data
 }
 
 const mockReports: Report[] = [
@@ -24,9 +25,54 @@ interface FinancialsRepositoryProps {
   onSelectReport: (report: Report) => void;
 }
 
+import { Upload } from 'lucide-react';
+
 export const FinancialsRepository: React.FC<FinancialsRepositoryProps> = ({ onSelectReport }) => {
   type TabType = 'All Reports' | 'Annual' | 'Quarterly' | 'Audit Statements';
   const [activeTab, setActiveTab] = useState<TabType>('All Reports');
+  const [isUploading, setIsUploading] = useState(false);
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) return;
+    const file = e.target.files[0];
+
+    setIsUploading(true);
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const response = await fetch('http://127.0.0.1:8008/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error('Upload failed');
+      }
+
+      const data = await response.json();
+
+      const newReport: Report = {
+        id: `upload-${Date.now()}`,
+        title: file.name.replace(/\.[^/.]+$/, ""),
+        type: file.name.endsWith('.csv') ? 'CSV' : 'XLSX',
+        size: `${(file.size / 1024 / 1024).toFixed(1)} MB`,
+        date: new Date().toISOString().split('T')[0],
+        category: 'Upload',
+        dynamicData: data
+      };
+
+      onSelectReport(newReport);
+
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      alert('Failed to process file. Ensure it is a valid CSV or XLSX.');
+    } finally {
+      setIsUploading(false);
+      // Reset input
+      if (e.target) e.target.value = '';
+    }
+  };
 
   const filteredReports = mockReports.filter((report) => {
     if (activeTab === 'All Reports') return true;
@@ -43,7 +89,25 @@ export const FinancialsRepository: React.FC<FinancialsRepositoryProps> = ({ onSe
         <p className="text-slate-500 font-bold mt-2">Access comprehensive financial disclosures and operational audits.</p>
       </div>
 
-      <div className="flex gap-4 mb-8 border-b border-[#1e293b] pb-4">
+      {/* UPLOAD ZONE */}
+      <div className="mb-8 border border-[#1e293b] bg-[#020617] rounded-2xl p-8 flex flex-col items-center justify-center text-center transition-all hover:border-[#3B82F6]/50 shadow-lg relative overflow-hidden group">
+        <input
+          type="file"
+          accept=".csv,.xlsx"
+          onChange={handleFileUpload}
+          disabled={isUploading}
+          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10 disabled:cursor-not-allowed"
+        />
+        <Upload size={48} className={`mb-4 transition-colors ${isUploading ? 'text-emerald-500 animate-pulse' : 'text-slate-500 group-hover:text-[#3B82F6]'}`} />
+        <h3 className="text-xl font-bold text-white mb-2 uppercase tracking-tighter">
+          {isUploading ? 'Processing File...' : 'Ingest Financial Data'}
+        </h3>
+        <p className="text-slate-400 font-bold text-sm">
+          Drag and drop or click to upload .CSV or .XLSX statement files for dynamic modeling.
+        </p>
+      </div>
+
+      <div className="flex gap-4 mb-8 border-b border-[#1e293b] pb-4 overflow-x-auto">
         {(['All Reports', 'Annual', 'Quarterly', 'Audit Statements'] as TabType[]).map((tab) => (
           <button
             key={tab}
