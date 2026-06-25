@@ -13,6 +13,7 @@ from google import genai
 from pydantic import BaseModel, Field
 from dotenv import load_dotenv
 from utils.config import settings
+from utils.middleware import APIKeyAuthMiddleware
 
 # --- 1. CONFIGURATION & ENVIRONMENT ---
 load_dotenv()
@@ -33,6 +34,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.add_middleware(APIKeyAuthMiddleware)
 
 # --- 2. ENGINE INITIALIZATION ---
 MODEL_ID = 'gemini-2.0-flash'
