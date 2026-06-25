@@ -4,7 +4,6 @@ Core AI engine: runs each due diligence module via Claude with built-in web sear
 Supports streaming text deltas for SSE delivery.
 """
 
-import asyncio
 import json
 import logging
 import time
