@@ -13,7 +13,7 @@ class Settings(BaseSettings):
     # --- Required Terminal Keys (Matches your .env) ---
     GEMINI_API_KEY: str = ""
     VITE_CLERK_PUBLISHABLE_KEY: str = ""
-    APP_URL: str = "http://localhost:5173"
+    APP_URL: str = "http://localhost:3000"
 
     # --- Optional AI Nodes (Set to None to prevent crashes) ---
     ANTHROPIC_API_KEY: Optional[str] = None
@@ -24,7 +24,7 @@ class Settings(BaseSettings):
     SEC_EDGAR_USER_AGENT: str = "VeririskForensic contact@yourcompany.com"
 
     # --- Infrastructure ---
-    ALLOWED_ORIGINS: List[str] = ["http://localhost:3000", "http://localhost:5173"]
+    ALLOWED_ORIGINS: List[str] = ["http://localhost:3000"]
     API_SECRET_KEY: str = "institutional-handshake-v3"
     PORT: int = 8008
     
