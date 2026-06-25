@@ -1,3 +1,4 @@
+import asyncio
 import pandas as pd
 from fastapi import APIRouter, UploadFile, File, HTTPException
 import io
@@ -14,9 +15,9 @@ async def upload_financials(file: UploadFile = File(...)):
 
     try:
         if file.filename.endswith('.csv'):
-            df = pd.read_csv(io.BytesIO(contents))
+            df = await asyncio.to_thread(pd.read_csv, io.BytesIO(contents))
         else:
-            df = pd.read_excel(io.BytesIO(contents))
+            df = await asyncio.to_thread(pd.read_excel, io.BytesIO(contents))
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Error parsing file: {str(e)}")
 
