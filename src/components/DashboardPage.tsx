@@ -34,10 +34,10 @@ export const DashboardPage: React.FC = () => {
   const isComplete = !isStreaming && hasStarted && !error;
 
   return (
-    <div className="flex flex-col h-full bg-[#0a0a0f] text-slate-300 font-sans relative overflow-y-auto terminal-scroll">
+    <div className="flex flex-col h-full bg-[#020617] text-slate-300 font-sans relative overflow-y-auto terminal-scroll">
       
       {/* MARKET TICKER TOP BAR */}
-      <div className="h-8 border-b border-slate-800 bg-[#0a0a0f] overflow-hidden flex items-center absolute top-0 left-0 right-0 z-10">
+      <div className="h-8 border-b border-[#1e293b] bg-[#020617] overflow-hidden flex items-center absolute top-0 left-0 right-0 z-10">
         <motion.div
           animate={{ x: [0, -1000] }}
           transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
@@ -92,7 +92,7 @@ export const DashboardPage: React.FC = () => {
               <AnimatePresence>
                  {isComplete && overallRisk !== null && metrics && chartData && verdict && (
                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3, duration: 0.5 }} className="flex flex-col gap-8">
-                      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-2xl relative overflow-hidden">
+                      <div className="bg-[#020617] border border-[#1e293b] rounded-2xl p-8 shadow-2xl relative overflow-hidden">
                           <div className="scanline"></div>
                           <div className="relative z-10 flex flex-col items-center">
                              <RiskGauge score={overallRisk} />

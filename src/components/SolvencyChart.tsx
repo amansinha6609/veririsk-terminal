@@ -8,7 +8,7 @@ interface SolvencyChartProps {
 
 export const SolvencyChart: React.FC<SolvencyChartProps> = ({ data }) => {
   return (
-    <div className="h-64 w-full animate-fade-in bg-slate-900 border border-slate-800 rounded-xl p-4">
+    <div className="h-64 w-full animate-fade-in bg-[#020617] border border-[#1e293b] rounded-xl p-4">
       <div className="text-[10px] font-mono font-bold text-slate-500 uppercase tracking-widest mb-4">Solvency Trajectory (Trailing 4Q)</div>
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart data={data} margin={{ top: 5, right: 0, left: -20, bottom: 0 }}>

@@ -28,7 +28,7 @@ export const ReportHistory: React.FC<ReportHistoryProps> = ({ onSelectReport, re
   if (reports.length === 0) return null;
 
   return (
-    <div className="w-full bg-slate-900 border border-slate-800 rounded-2xl p-6">
+    <div className="w-full bg-[#020617] border border-[#1e293b] rounded-2xl p-6">
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-xs font-bold text-slate-300 uppercase tracking-widest flex items-center gap-2">
           <History size={16} className="text-emerald-500" /> Recent Audits
@@ -39,7 +39,7 @@ export const ReportHistory: React.FC<ReportHistoryProps> = ({ onSelectReport, re
           <button
             key={report.report_id}
             onClick={() => onSelectReport(report.company_name)}
-            className="flex items-center justify-between p-3 rounded-xl border border-slate-800 hover:border-slate-600 hover:bg-slate-800/50 transition-all group text-left"
+            className="flex items-center justify-between p-3 rounded-xl border border-[#1e293b] hover:border-[#1e293b] hover:bg-[#1e293b]/50 transition-all group text-left"
           >
             <div>
                <div className="font-bold text-white text-sm mb-1">{report.company_name}</div>

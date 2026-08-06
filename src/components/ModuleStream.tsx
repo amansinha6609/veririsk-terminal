@@ -16,8 +16,8 @@ export const ModuleStream: React.FC<ModuleStreamProps> = ({ module }) => {
   }, [module.text]);
 
   return (
-    <div className={`flex flex-col h-64 border rounded-xl overflow-hidden transition-colors ${module.status === 'pending' ? 'border-slate-800 bg-slate-900/50 opacity-50' : 'border-slate-700 bg-[#0a0a0f]'}`}>
-      <div className="flex items-center justify-between px-4 py-2 border-b border-slate-800 bg-slate-900">
+    <div className={`flex flex-col h-64 border rounded-xl overflow-hidden transition-colors ${module.status === 'pending' ? 'border-[#1e293b] bg-[#020617]/50 opacity-50' : 'border-[#1e293b] bg-[#020617]'}`}>
+      <div className="flex items-center justify-between px-4 py-2 border-b border-[#1e293b] bg-[#020617]">
         <span className="text-xs font-bold text-slate-300 uppercase tracking-widest">{module.label}</span>
         {module.status === 'streaming' && <Loader2 className="animate-spin text-emerald-500" size={14} />}
         {module.status === 'complete' && (

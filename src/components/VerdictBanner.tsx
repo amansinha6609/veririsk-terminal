@@ -8,7 +8,7 @@ interface VerdictBannerProps {
 
 export const VerdictBanner: React.FC<VerdictBannerProps> = ({ verdict, score }) => {
   const getStyle = () => {
-    if (score < 30) return { bg: 'bg-emerald-500/10', border: 'border-emerald-500/20', text: 'text-emerald-500', icon: <CheckCircle className="text-emerald-500" size={24} />, badge: 'LOW RISK' };
+    if (score < 30) return { bg: 'bg-[#10B981]/10', border: 'border-[#10B981]/20', text: 'text-[#10B981]', icon: <CheckCircle className="text-[#10B981]" size={24} />, badge: 'LOW RISK' };
     if (score < 55) return { bg: 'bg-amber-500/10', border: 'border-amber-500/20', text: 'text-amber-500', icon: <Info className="text-amber-500" size={24} />, badge: 'MODERATE RISK' };
     if (score < 75) return { bg: 'bg-orange-500/10', border: 'border-orange-500/20', text: 'text-orange-500', icon: <AlertTriangle className="text-orange-500" size={24} />, badge: 'HIGH RISK' };
     return { bg: 'bg-red-500/10', border: 'border-red-500/20', text: 'text-red-500', icon: <AlertTriangle className="text-red-500" size={24} />, badge: 'CRITICAL RISK' };

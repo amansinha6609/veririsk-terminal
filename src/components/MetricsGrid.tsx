@@ -26,7 +26,7 @@ export const MetricsGrid: React.FC<MetricsGridProps> = ({ metrics }) => {
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 animate-fade-in">
       {metricCards.map((m, i) => (
-        <div key={i} className="p-4 bg-slate-900 border border-slate-800 rounded-xl flex flex-col justify-between">
+        <div key={i} className="p-4 bg-[#020617] border border-[#1e293b] rounded-xl flex flex-col justify-between">
           <div className="text-[10px] uppercase text-slate-500 font-bold tracking-widest mb-2" title={m.fullLabel}>{m.label}</div>
           <div className={`text-2xl font-mono font-black ${getHealth(m.label, parseFloat(m.value))}`}>{m.value}</div>
         </div>

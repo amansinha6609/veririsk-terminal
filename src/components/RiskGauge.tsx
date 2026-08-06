@@ -42,7 +42,7 @@ export const RiskGauge: React.FC<RiskGaugeProps> = ({ score }) => {
     <div className="relative flex flex-col items-center justify-center w-48 h-48 mx-auto animate-fade-in">
       <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
         <circle
-          className="text-slate-800"
+          className="text-[#1e293b]"
           strokeWidth="8"
           stroke="currentColor"
           fill="transparent"
