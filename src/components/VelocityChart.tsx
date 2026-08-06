@@ -8,7 +8,7 @@ interface VelocityChartProps {
 
 export const VelocityChart: React.FC<VelocityChartProps> = ({ data }) => {
   return (
-    <div className="h-64 w-full animate-fade-in bg-slate-900 border border-slate-800 rounded-xl p-4">
+    <div className="h-64 w-full animate-fade-in bg-[#020617] border border-[#1e293b] rounded-xl p-4">
       <div className="text-[10px] font-mono font-bold text-slate-500 uppercase tracking-widest mb-4">Risk Velocity (T-90 to NOW)</div>
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={data} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
@@ -24,7 +24,7 @@ export const VelocityChart: React.FC<VelocityChartProps> = ({ data }) => {
                return [value, "Risk Score"];
             }}
           />
-          <Line type="monotone" dataKey="risk" stroke="#3B82F6" strokeWidth={3} dot={{ r: 4, fill: '#0a0a0f', strokeWidth: 2 }} activeDot={{ r: 6 }} />
+          <Line type="monotone" dataKey="risk" stroke="#3B82F6" strokeWidth={3} dot={{ r: 4, fill: '#020617', strokeWidth: 2 }} activeDot={{ r: 6 }} />
         </LineChart>
       </ResponsiveContainer>
     </div>
